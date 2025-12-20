@@ -25,7 +25,7 @@ header {
     color: white;
     padding: 45px 25px;
     text-align: center;
-    position: relative; /* necessário para a marca */
+    position: relative;
 }
 
 /* NOME DA EMPRESA */
@@ -78,14 +78,24 @@ header p {
 .app-logo {
     width: 80px;
     height: 80px;
-    background: #eee;
+    background: #f4f4f4;
     border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
-    color: #777;
     flex-shrink: 0;
+}
+
+.app-logo img {
+    max-width: 65px;
+    max-height: 65px;
+    object-fit: contain;
+    transition: transform 0.3s ease; /* animação */
+}
+
+/* ANIMAÇÃO LEVE NAS LOGOS */
+.app-card:hover .app-logo img {
+    transform: scale(1.08);
 }
 
 /* INFO */
@@ -153,37 +163,51 @@ header p {
 
 <main class="container">
 
-    <!-- APP 1 -->
+    <!-- SISTEMA DE GERENCIAMENTO -->
     <div class="app-card">
-        <div class="app-logo">https://office-net-ofc.github.io/Pagina-de-treinamentos/img/sgp.png</div>
+        <div class="app-logo">
+            <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/sgp.png"
+                 alt="Sistema de Gerenciamento">
+        </div>
 
         <div class="app-info">
             <h2>Sistema de Gerenciamento</h2>
             <p>
-                Configure ações, otimise processos, domine o sistema e
-                almente suas chances de promossão.
+                Configure ações, otimize processos, domine o sistema e
+                aumente suas chances de promoção.
             </p>
         </div>
 
-        <a href="https://mickaelfelipe2025.github.io/teste/" class="app-button">Assistir tutoriais</a>
+        <a href="https://mickaelfelipe2025.github.io/teste/" class="app-button">
+            Assistir tutoriais
+        </a>
     </div>
 
-    <!-- APP 2 -->
+    <!-- SISTEMA DE CHAT-BOT -->
     <div class="app-card">
-        <div class="app-logo">Logo App</div>
+        <div class="app-logo">
+            <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/focus_chat.png"
+                 alt="Sistema de Chat-Bot">
+        </div>
 
         <div class="app-info">
             <h2>Sistema de Chat-Bot</h2>
             <p>
-                Configure ações, otimise processos, domine o sistema e
-                almente suas chances de promossão.
+                Configure ações, otimize processos, domine o sistema e
+                aumente suas chances de promoção.
             </p>
         </div>
 
-        <a href="#" class="app-button">Assistir tutoriais</a>
+        <a href="#" class="app-button">
+            Assistir tutoriais
+        </a>
     </div>
 
 </main>
 
 <footer style="text-align:center; padding:25px; font-size:13px; color:#777;">
     © 2025 Office Net
+</footer>
+
+</body>
+</html>
