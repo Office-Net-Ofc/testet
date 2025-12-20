@@ -15,24 +15,14 @@
 body {
     background-color: #F0FAF0;
     color: #1f2d1f;
-    overflow-x: hidden;
 }
 
-/* ================= HEADER ================= */
 header {
     position: relative;
-    background: linear-gradient(270deg, #3CAA28, #BE961E, #3CAA28);
-    background-size: 600% 600%;
-    animation: gradientMove 14s ease infinite;
+    background: linear-gradient(90deg, #3CAA28, #BE961E);
     color: white;
     text-align: center;
-    padding: 90px 20px 80px;
-}
-
-@keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    padding: 70px 20px;
 }
 
 /* LOGO */
@@ -40,67 +30,41 @@ header {
     position: absolute;
     top: 20px;
     left: 20px;
-    animation: fadeSlide 1.2s ease forwards;
 }
 
 .header-logo img {
     height: 55px;
+    width: auto;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+    .header-logo img {
+        height: 42px;
+    }
 }
 
 header h1 {
     font-size: 34px;
     margin-bottom: 12px;
-    opacity: 0;
-    animation: fadeUp 1s ease forwards;
-    animation-delay: .4s;
 }
 
 header p {
     font-size: 17px;
-    opacity: 0;
-    animation: fadeUp 1s ease forwards;
-    animation-delay: .7s;
 }
 
 header .frase {
     margin-top: 18px;
     font-size: 15px;
     font-style: italic;
-    opacity: 0;
-    animation: fadeUp 1s ease forwards;
-    animation-delay: 1s;
 }
 
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(25px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeSlide {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-
-/* ================= CONTAINER ================= */
 .container {
     max-width: 1100px;
-    margin: 80px auto;
+    margin: 70px auto;
     padding: 0 20px;
 }
 
-/* SCROLL ANIMATION */
-.reveal {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: all .8s ease;
-}
-
-.reveal.active {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* ================= SECTIONS ================= */
 .info {
     background: white;
     padding: 40px;
@@ -144,7 +108,6 @@ header .frase {
     font-size: 15px;
 }
 
-/* ================= BUTTONS ================= */
 .buttons {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -152,7 +115,6 @@ header .frase {
 }
 
 .button {
-    position: relative;
     background: white;
     border: 2px solid #3CAA28;
     border-radius: 18px;
@@ -164,22 +126,6 @@ header .frase {
     color: #1f2d1f;
     transition: all 0.35s ease;
     box-shadow: 0 12px 30px rgba(0,0,0,0.1);
-    overflow: hidden;
-}
-
-.button::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255,255,255,.4), transparent);
-    transition: all .6s ease;
-}
-
-.button:hover::after {
-    left: 100%;
 }
 
 .button span {
@@ -192,7 +138,7 @@ header .frase {
 .button:hover {
     background-color: #3CAA28;
     color: white;
-    transform: translateY(-10px) scale(1.02);
+    transform: translateY(-8px);
 }
 
 .button:hover span {
@@ -205,7 +151,10 @@ header .frase {
     color: white;
 }
 
-/* ================= FOOTER ================= */
+.button-premium span {
+    color: #f0faf0;
+}
+
 footer {
     margin-top: 90px;
     text-align: center;
@@ -214,31 +163,26 @@ footer {
     color: #777;
     border-top: 1px solid #ddd;
 }
-
-/* MOBILE */
-@media (max-width: 600px) {
-    .header-logo img {
-        height: 42px;
-    }
-}
 </style>
 </head>
 
 <body>
 
 <header>
+
     <div class="header-logo">
-        <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/Logo_Branca_Pequena-sem-fundo.png" alt="Logo Office Net">
+        <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/Logo_Branca_Pequena-sem-fundo.png">
     </div>
 
     <h1>Portal Interno Office Net</h1>
     <p>Central de treinamentos e orientações corporativas</p>
     <div class="frase">“Conhecimento certo gera atendimento excelente.”</div>
+
 </header>
 
 <main class="container">
 
-    <section class="info reveal">
+    <section class="info">
         <h2>Propósito deste portal</h2>
         <ul>
             <li>Padronizar processos e boas práticas internas</li>
@@ -248,24 +192,24 @@ footer {
         </ul>
     </section>
 
-    <section class="aviso reveal">
+    <section class="aviso">
         🔔 <strong>Aviso Interno:</strong> Novos cursos de atendimento e suporte técnico
         serão disponibilizados em breve neste portal.
     </section>
 
-    <section class="buttons reveal">
+    <section class="buttons">
 
-        <a href="#" class="button">
+        <a href="https://office-net-ofc.github.io/Pagina-de-treinamentos/Tutoriais-sistemas/Tutoriais-sistemas-index.html" class="button">
             Treinamentos do Sistema
             <span>Processos internos, sistemas e rotinas operacionais</span>
         </a>
 
-        <a href="#" class="button">
+        <a href="https://office-net-ofc.github.io/Pagina-de-treinamentos/Tutoriais-clientes/tutoriais-clientes-index.html" class="button">
             Tutoriais para Clientes
             <span>Orientações sobre aplicativos e serviços Office Net</span>
         </a>
 
-        <a href="#" class="button button-premium">
+        <a href="https://office-net-ofc.github.io/Pagina-de-treinamentos/Cursos-internos/Cursos-internos-index.html" class="button button-premium">
             Cursos Internos Office Net
             <span>Desenvolvimento profissional e crescimento na empresa</span>
         </a>
@@ -277,19 +221,6 @@ footer {
 <footer>
     © 2025 Office Net — Portal interno corporativo
 </footer>
-
-<script>
-const reveals = document.querySelectorAll('.reveal');
-
-window.addEventListener('scroll', () => {
-    reveals.forEach(el => {
-        const top = el.getBoundingClientRect().top;
-        if (top < window.innerHeight - 80) {
-            el.classList.add('active');
-        }
-    });
-});
-</script>
 
 </body>
 </html>
