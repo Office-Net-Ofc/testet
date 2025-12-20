@@ -2,10 +2,32 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Office Net | Cursos Internos</title>
+<title>Office Net | Plataforma de Cursos</title>
 
 <style>
-/* RESET */
+:root {
+    --bg: #F0FAF0;
+    --text: #1f2d1f;
+    --card: #ffffff;
+    --muted: #6b6b6b;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #0f1a0f;
+        --text: #f1f5f1;
+        --card: #162416;
+        --muted: #9fb19f;
+    }
+}
+
+body.dark {
+    --bg: #0f1a0f;
+    --text: #f1f5f1;
+    --card: #162416;
+    --muted: #9fb19f;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -13,10 +35,9 @@
     font-family: 'Segoe UI', Arial, sans-serif;
 }
 
-/* BODY */
 body {
-    background-color: #F0FAF0;
-    color: #1f2d1f;
+    background: var(--bg);
+    color: var(--text);
 }
 
 /* HEADER */
@@ -29,7 +50,6 @@ header {
     position: relative;
 }
 
-/* LOGO */
 .brand {
     position: absolute;
     left: 25px;
@@ -39,114 +59,140 @@ header {
     height: 40px;
 }
 
-/* TITULO */
 header h1 {
-    font-size: 22px;
     color: #fff;
+    font-size: 22px;
 }
 
-/* SUBHEADER */
-.subheader {
+/* LOGIN */
+.login {
+    max-width: 400px;
+    margin: 80px auto;
+    background: var(--card);
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
     text-align: center;
-    margin-top: 25px;
-    font-size: 14px;
-    color: #5a6b5a;
 }
 
-/* CONTAINER */
-.container {
+.login input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    margin-top: 15px;
+}
+
+.login button {
+    margin-top: 20px;
+    padding: 14px;
+    width: 100%;
+    border-radius: 25px;
+    border: none;
+    background: linear-gradient(90deg, #3CAA28, #BE961E);
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* DASHBOARD */
+.dashboard {
+    display: none;
     max-width: 1300px;
-    margin: 35px auto 60px;
+    margin: 40px auto;
     padding: 0 20px;
 }
 
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.toggle {
+    cursor: pointer;
+    font-size: 14px;
+}
+
 /* GRID */
-.course-grid {
+.grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
     gap: 26px;
 }
 
 /* CARD */
-.course-card {
-    text-decoration: none;
-    color: inherit;
-}
-
-/* CAPA */
-.course-cover {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 9;
+.card {
+    background: var(--card);
     border-radius: 16px;
     overflow: hidden;
-    background: #000;
     box-shadow: 0 6px 18px rgba(0,0,0,0.15);
 }
 
-.course-cover img {
+.cover {
+    aspect-ratio: 16/9;
+    background: #000;
+}
+
+.cover img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: 0.4s ease;
 }
 
-.course-card:hover img {
-    transform: scale(1.08);
+.info {
+    padding: 15px;
 }
 
-/* OVERLAY */
-.course-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.65), transparent 60%);
+.progress {
+    height: 6px;
+    background: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 10px;
 }
 
-/* BADGE */
-.badge {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    background: rgba(0,0,0,0.75);
-    color: #fff;
-    padding: 6px 12px;
-    font-size: 11px;
-    border-radius: 20px;
-    font-weight: 600;
+.progress span {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #3CAA28, #BE961E);
 }
 
-/* TITULO DO CURSO */
-.course-title {
+.actions {
     margin-top: 12px;
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1.4;
+    display: flex;
+    gap: 10px;
 }
 
-/* FOOTER */
-footer {
-    text-align: center;
-    padding: 30px;
+.actions button {
+    flex: 1;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
     font-size: 13px;
-    color: #777;
-    background: #fff;
-    border-top: 1px solid #e0e0e0;
 }
 
-/* RESPONSIVO */
-@media (max-width: 768px) {
-    header {
-        flex-direction: column;
-    }
+.start {
+    background: linear-gradient(90deg, #3CAA28, #BE961E);
+    color: #fff;
+}
 
-    .brand {
-        position: static;
-        margin-bottom: 10px;
-    }
+.cert {
+    background: #ccc;
+}
 
-    header h1 {
-        text-align: center;
-    }
+/* CERTIFICADO */
+#certificate {
+    display: none;
+    text-align: center;
+    margin: 60px;
+}
+
+#certificate h2 {
+    margin-bottom: 20px;
 }
 </style>
 </head>
@@ -157,72 +203,85 @@ footer {
     <div class="brand">
         <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/Logo_Branca_Pequena-sem-fundo.png">
     </div>
-    <h1>Cursos Internos</h1>
+    <h1>Plataforma de Cursos</h1>
 </header>
 
-<div class="subheader">
-    Capacitação contínua • Treinamentos exclusivos para colaboradores
+<!-- LOGIN -->
+<div class="login" id="login">
+    <h2>Bem-vindo 👋</h2>
+    <p>Informe seu nome para acessar</p>
+    <input id="nameInput" placeholder="Seu nome completo">
+    <button onclick="login()">Entrar</button>
 </div>
 
-<main class="container">
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
 
-    <div class="course-grid">
-
-        <!-- CURSO 1 -->
-        <a href="#" class="course-card">
-            <div class="course-cover">
-                <img src="https://img.youtube.com/vi/OKpSAzB66hU/hqdefault.jpg">
-                <div class="course-overlay"></div>
-                <div class="badge">Obrigatório</div>
-            </div>
-            <div class="course-title">
-                Integração Office Net – Boas-vindas e processos internos
-            </div>
-        </a>
-
-        <!-- CURSO 2 -->
-        <a href="#" class="course-card">
-            <div class="course-cover">
-                <img src="https://img.youtube.com/vi/GtV17lWjWFo/hqdefault.jpg">
-                <div class="course-overlay"></div>
-                <div class="badge">Suporte</div>
-            </div>
-            <div class="course-title">
-                Atendimento ao Cliente – Padrão Office Net
-            </div>
-        </a>
-
-        <!-- CURSO 3 -->
-        <a href="#" class="course-card">
-            <div class="course-cover">
-                <img src="https://img.youtube.com/vi/o7exS0xj3v0/hqdefault.jpg">
-                <div class="course-overlay"></div>
-                <div class="badge">Técnico</div>
-            </div>
-            <div class="course-title">
-                Fundamentos de Redes e FTTH
-            </div>
-        </a>
-
-        <!-- CURSO 4 -->
-        <a href="#" class="course-card">
-            <div class="course-cover">
-                <img src="https://img.youtube.com/vi/wXRPw_ftaS4/hqdefault.jpg">
-                <div class="course-overlay"></div>
-                <div class="badge">Avançado</div>
-            </div>
-            <div class="course-title">
-                Segurança da Informação e Boas Práticas
-            </div>
-        </a>
-
+    <div class="topbar">
+        <div id="welcome"></div>
+        <div class="toggle" onclick="toggleDark()">🌙 Dark Mode</div>
     </div>
 
-</main>
+    <div class="grid">
+        <div class="card">
+            <div class="cover">
+                <img src="https://img.youtube.com/vi/OKpSAzB66hU/hqdefault.jpg">
+            </div>
+            <div class="info">
+                <strong>Integração Office Net</strong>
+                <div class="progress"><span id="p1"></span></div>
+                <div class="actions">
+                    <button class="start" onclick="progress('p1')">Assistir</button>
+                    <button class="cert" onclick="cert()">Certificado</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<footer>
-    © 2025 Office Net • Portal de Capacitação Interna
-</footer>
+</div>
+
+<!-- CERTIFICADO -->
+<div id="certificate">
+    <h2>Certificado de Conclusão</h2>
+    <p>Certificamos que</p>
+    <h3 id="certName"></h3>
+    <p>concluiu o treinamento interno da Office Net.</p>
+    <button onclick="window.print()">Imprimir</button>
+</div>
+
+<script>
+function login(){
+    const name = document.getElementById('nameInput').value;
+    if(!name) return alert('Informe seu nome');
+    localStorage.setItem('user', name);
+    document.getElementById('login').style.display='none';
+    document.getElementById('dashboard').style.display='block';
+    document.getElementById('welcome').innerText = `Olá, ${name}`;
+}
+
+if(localStorage.getItem('user')){
+    login();
+}
+
+function progress(id){
+    const bar = document.getElementById(id);
+    let width = parseInt(bar.style.width) || 0;
+    if(width < 100){
+        width += 25;
+        bar.style.width = width + '%';
+    }
+}
+
+function cert(){
+    document.getElementById('dashboard').style.display='none';
+    document.getElementById('certificate').style.display='block';
+    document.getElementById('certName').innerText = localStorage.getItem('user');
+}
+
+function toggleDark(){
+    document.body.classList.toggle('dark');
+}
+</script>
 
 </body>
 </html>
