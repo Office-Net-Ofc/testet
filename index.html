@@ -2,32 +2,10 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Office Net | Plataforma de Cursos</title>
+<title>Office Net | Treinamentos Internos</title>
 
 <style>
-:root {
-    --bg: #F0FAF0;
-    --text: #1f2d1f;
-    --card: #ffffff;
-    --muted: #6b6b6b;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg: #0f1a0f;
-        --text: #f1f5f1;
-        --card: #162416;
-        --muted: #9fb19f;
-    }
-}
-
-body.dark {
-    --bg: #0f1a0f;
-    --text: #f1f5f1;
-    --card: #162416;
-    --muted: #9fb19f;
-}
-
+/* ================= RESET ================= */
 * {
     margin: 0;
     padding: 0;
@@ -35,15 +13,38 @@ body.dark {
     font-family: 'Segoe UI', Arial, sans-serif;
 }
 
+/* ================= VARIÁVEIS ================= */
+:root {
+    --bg: #F0FAF0;
+    --text: #1f2d1f;
+    --card: #ffffff;
+    --muted: #666;
+    --green: #3CAA28;
+    --gold: #BE961E;
+    --shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #0f1a12;
+        --text: #e8f5e8;
+        --card: #16241a;
+        --muted: #aaa;
+        --shadow: 0 12px 30px rgba(0,0,0,0.4);
+    }
+}
+
+/* ================= BODY ================= */
 body {
     background: var(--bg);
     color: var(--text);
+    transition: background .4s ease, color .4s ease;
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
 header {
-    background: linear-gradient(90deg, #3CAA28, #BE961E);
-    padding: 20px 25px;
+    background: linear-gradient(90deg, var(--green), var(--gold));
+    padding: 22px 25px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -56,143 +57,137 @@ header {
 }
 
 .brand img {
-    height: 40px;
+    height: 42px;
 }
 
 header h1 {
     color: #fff;
     font-size: 22px;
+    letter-spacing: .5px;
 }
 
-/* LOGIN */
-.login {
-    max-width: 400px;
-    margin: 80px auto;
-    background: var(--card);
-    padding: 35px;
-    border-radius: 18px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    text-align: center;
-}
-
-.login input {
-    width: 100%;
-    padding: 14px;
-    border-radius: 12px;
-    border: 1px solid #ccc;
-    margin-top: 15px;
-}
-
-.login button {
-    margin-top: 20px;
-    padding: 14px;
-    width: 100%;
-    border-radius: 25px;
-    border: none;
-    background: linear-gradient(90deg, #3CAA28, #BE961E);
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* DASHBOARD */
-.dashboard {
-    display: none;
-    max-width: 1300px;
-    margin: 40px auto;
+/* ================= INTRO ================= */
+.intro {
+    max-width: 1200px;
+    margin: 40px auto 10px;
     padding: 0 20px;
 }
 
-.topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
+.intro h2 {
+    font-size: 24px;
+    margin-bottom: 6px;
 }
 
-.toggle {
-    cursor: pointer;
-    font-size: 14px;
+.intro p {
+    color: var(--muted);
+    font-size: 15px;
 }
 
-/* GRID */
-.grid {
+/* ================= GRID ================= */
+.container {
+    max-width: 1200px;
+    margin: 30px auto 60px;
+    padding: 0 20px;
+}
+
+.video-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px,1fr));
-    gap: 26px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
 }
 
-/* CARD */
-.card {
-    background: var(--card);
+/* ================= CARD ================= */
+.video-card {
+    text-decoration: none;
+    color: inherit;
+    opacity: 0;
+    transform: translateY(25px);
+    animation: fadeUp .7s ease forwards;
+}
+
+.video-card:nth-child(1){animation-delay:.1s}
+.video-card:nth-child(2){animation-delay:.2s}
+.video-card:nth-child(3){animation-delay:.3s}
+.video-card:nth-child(4){animation-delay:.4s}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================= THUMB ================= */
+.thumbnail {
+    position: relative;
+    aspect-ratio: 16 / 9;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
-}
-
-.cover {
-    aspect-ratio: 16/9;
     background: #000;
+    box-shadow: var(--shadow);
 }
 
-.cover img {
+.thumbnail img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform .6s ease;
 }
 
-.info {
-    padding: 15px;
+.video-card:hover img {
+    transform: scale(1.08);
 }
 
-.progress {
-    height: 6px;
-    background: #ddd;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: 10px;
-}
-
-.progress span {
-    display: block;
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #3CAA28, #BE961E);
-}
-
-.actions {
-    margin-top: 12px;
-    display: flex;
-    gap: 10px;
-}
-
-.actions button {
-    flex: 1;
-    padding: 10px;
-    border-radius: 20px;
-    border: none;
-    cursor: pointer;
-    font-size: 13px;
-}
-
-.start {
-    background: linear-gradient(90deg, #3CAA28, #BE961E);
+/* ================= BADGES ================= */
+.badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0,0,0,.75);
     color: #fff;
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 20px;
+    backdrop-filter: blur(6px);
 }
 
-.cert {
-    background: #ccc;
+.status {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: linear-gradient(90deg, var(--green), var(--gold));
+    color: #fff;
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 20px;
 }
 
-/* CERTIFICADO */
-#certificate {
-    display: none;
+/* ================= TITLE ================= */
+.video-title {
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+/* ================= FOOTER ================= */
+footer {
     text-align: center;
-    margin: 60px;
+    padding: 25px;
+    font-size: 13px;
+    color: var(--muted);
 }
 
-#certificate h2 {
-    margin-bottom: 20px;
+/* ================= RESPONSIVO ================= */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .brand {
+        position: static;
+    }
 }
 </style>
 </head>
@@ -203,85 +198,61 @@ header h1 {
     <div class="brand">
         <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/Logo_Branca_Pequena-sem-fundo.png">
     </div>
-    <h1>Plataforma de Cursos</h1>
+    <h1>Treinamentos Internos</h1>
 </header>
 
-<!-- LOGIN -->
-<div class="login" id="login">
-    <h2>Bem-vindo 👋</h2>
-    <p>Informe seu nome para acessar</p>
-    <input id="nameInput" placeholder="Seu nome completo">
-    <button onclick="login()">Entrar</button>
-</div>
+<section class="intro">
+    <h2>Universidade Office Net</h2>
+    <p>Capacitação interna para padronizar processos, elevar qualidade e formar profissionais de alto nível.</p>
+</section>
 
-<!-- DASHBOARD -->
-<div class="dashboard" id="dashboard">
+<main class="container">
 
-    <div class="topbar">
-        <div id="welcome"></div>
-        <div class="toggle" onclick="toggleDark()">🌙 Dark Mode</div>
-    </div>
+    <div class="video-grid">
 
-    <div class="grid">
-        <div class="card">
-            <div class="cover">
+        <a class="video-card" target="_blank" href="#">
+            <div class="thumbnail">
+                <span class="badge">Obrigatório</span>
+                <span class="status">Não iniciado</span>
                 <img src="https://img.youtube.com/vi/OKpSAzB66hU/hqdefault.jpg">
             </div>
-            <div class="info">
-                <strong>Integração Office Net</strong>
-                <div class="progress"><span id="p1"></span></div>
-                <div class="actions">
-                    <button class="start" onclick="progress('p1')">Assistir</button>
-                    <button class="cert" onclick="cert()">Certificado</button>
-                </div>
+            <div class="video-title">Onboarding Office Net – Introdução</div>
+        </a>
+
+        <a class="video-card" target="_blank" href="#">
+            <div class="thumbnail">
+                <span class="badge">Técnico</span>
+                <span class="status">Em andamento</span>
+                <img src="https://img.youtube.com/vi/GtV17lWjWFo/hqdefault.jpg">
             </div>
-        </div>
+            <div class="video-title">Sistema de Gerenciamento – Operação</div>
+        </a>
+
+        <a class="video-card" target="_blank" href="#">
+            <div class="thumbnail">
+                <span class="badge">Novo</span>
+                <span class="status">Não iniciado</span>
+                <img src="https://img.youtube.com/vi/o7exS0xj3v0/hqdefault.jpg">
+            </div>
+            <div class="video-title">Atendimento ao Cliente – Boas Práticas</div>
+        </a>
+
+        <a class="video-card" target="_blank" href="#">
+            <div class="thumbnail">
+                <span class="badge">Técnico</span>
+                <span class="status">Concluído</span>
+                <img src="https://img.youtube.com/vi/wXRPw_ftaS4/hqdefault.jpg">
+            </div>
+            <div class="video-title">Procedimentos Técnicos FTTH</div>
+        </a>
+
     </div>
 
-</div>
+</main>
 
-<!-- CERTIFICADO -->
-<div id="certificate">
-    <h2>Certificado de Conclusão</h2>
-    <p>Certificamos que</p>
-    <h3 id="certName"></h3>
-    <p>concluiu o treinamento interno da Office Net.</p>
-    <button onclick="window.print()">Imprimir</button>
-</div>
-
-<script>
-function login(){
-    const name = document.getElementById('nameInput').value;
-    if(!name) return alert('Informe seu nome');
-    localStorage.setItem('user', name);
-    document.getElementById('login').style.display='none';
-    document.getElementById('dashboard').style.display='block';
-    document.getElementById('welcome').innerText = `Olá, ${name}`;
-}
-
-if(localStorage.getItem('user')){
-    login();
-}
-
-function progress(id){
-    const bar = document.getElementById(id);
-    let width = parseInt(bar.style.width) || 0;
-    if(width < 100){
-        width += 25;
-        bar.style.width = width + '%';
-    }
-}
-
-function cert(){
-    document.getElementById('dashboard').style.display='none';
-    document.getElementById('certificate').style.display='block';
-    document.getElementById('certName').innerText = localStorage.getItem('user');
-}
-
-function toggleDark(){
-    document.body.classList.toggle('dark');
-}
-</script>
+<footer>
+    © 2025 Office Net — Plataforma Interna
+</footer>
 
 </body>
 </html>
