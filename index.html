@@ -5,7 +5,6 @@
 <title>Office Net | Tutoriais dos Aplicativos</title>
 
 <style>
-/* RESET */
 * {
     margin: 0;
     padding: 0;
@@ -13,161 +12,96 @@
     font-family: 'Segoe UI', Arial, sans-serif;
 }
 
-/* BODY */
 body {
-    background-color: #F0FAF0;
-    color: #1f2d1f;
+    background-color: #F9F9F9;
+    color: #0f0f0f;
 }
 
 /* HEADER */
 header {
-    background: linear-gradient(90deg, #3CAA28, #BE961E);
-    color: white;
-    padding: 45px 25px;
-    text-align: center;
-    position: relative;
+    background: white;
+    padding: 20px 30px;
+    border-bottom: 1px solid #ddd;
 }
 
-/* NOME DA EMPRESA */
-.brand {
-    position: absolute;
-    top: 18px;
-    left: 25px;
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-/* BOTÃO YOUTUBE */
-.youtube-button {
-    position: absolute;
-    top: 18px;
-    right: 25px;
-    width: 44px;
-    height: 44px;
-    background-color: #FF0000;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    transition: 0.3s ease;
-}
-
-.youtube-button:hover {
-    transform: scale(1.1);
-}
-
-.youtube-button img {
-    width: 22px;
-    height: 22px;
-}
-
-/* TITULOS */
 header h1 {
-    font-size: 30px;
-    margin-bottom: 8px;
-}
-
-header p {
-    font-size: 15px;
-    opacity: 0.95;
+    font-size: 22px;
 }
 
 /* CONTAINER */
 .container {
-    max-width: 900px;
-    margin: 60px auto;
-    padding: 0 20px;
+    max-width: 1400px;
+    margin: 30px auto;
+    padding: 0 30px;
 }
 
-/* CARD APP */
-.app-card {
-    background: white;
-    border-radius: 18px;
-    padding: 30px;
-    margin-bottom: 25px;
-    display: flex;
-    align-items: center;
-    gap: 25px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    transition: 0.3s ease;
+/* GRID YOUTUBE */
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
 }
 
-.app-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 35px rgba(0,0,0,0.18);
+/* CARD VÍDEO */
+.video-card {
+    cursor: pointer;
 }
 
-/* LOGO APP */
-.app-logo {
-    width: 80px;
-    height: 80px;
-    background: #eee;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* THUMB */
+.video-thumb {
+    position: relative;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.video-thumb img {
+    width: 100%;
+    display: block;
+}
+
+/* DURAÇÃO */
+.video-duration {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.8);
+    color: white;
     font-size: 12px;
-    color: #777;
-    flex-shrink: 0;
+    padding: 2px 6px;
+    border-radius: 4px;
 }
 
 /* INFO */
-.app-info {
-    flex: 1;
+.video-info {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
 }
 
-.app-info h2 {
-    font-size: 20px;
-    margin-bottom: 8px;
-}
-
-.app-info p {
-    font-size: 14px;
-    color: #555;
-    line-height: 1.5;
-}
-
-/* BOTÃO */
-.app-button {
-    padding: 12px 20px;
-    background: linear-gradient(90deg, #3CAA28, #BE961E);
+.channel-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #3CAA28;
     color: white;
-    text-decoration: none;
-    border-radius: 25px;
-    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-weight: bold;
-    transition: 0.3s ease;
-    white-space: nowrap;
+    font-size: 14px;
 }
 
-.app-button:hover {
-    transform: scale(1.05);
+.video-text h3 {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 4px;
 }
 
-/* RESPONSIVO */
-@media (max-width: 768px) {
-    .brand {
-        position: static;
-        margin-bottom: 15px;
-        display: block;
-        text-align: center;
-    }
-
-    .youtube-button {
-        top: 15px;
-        right: 15px;
-    }
-
-    .app-card {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .app-button {
-        margin-top: 15px;
-    }
+.video-text span {
+    font-size: 12px;
+    color: #606060;
 }
 </style>
 </head>
@@ -175,46 +109,76 @@ header p {
 <body>
 
 <header>
-    <div class="brand">Office Net</div>
-
-    <!-- BOTÃO YOUTUBE -->
-    <a 
-        href="https://www.youtube.com/watch?v=OKpSAzB66hU"
-        target="_blank"
-        class="youtube-button"
-        title="Assistir no YouTube">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/YouTube_social_white_squircle_%282017%29.svg" alt="YouTube">
-    </a>
-
-    <h1>Tutoriais dos Sistemas</h1>
-    <p>Aprenda a acessar e utilizar nossos sistemas</p>
+    <h1>📺 Tutoriais Office Net</h1>
 </header>
 
 <main class="container">
 
-    <div class="app-card">
-        <div class="app-logo">Logo App</div>
-        <div class="app-info">
-            <h2>App do Cliente Office Net</h2>
-            <p>Consulte faturas, acompanhe consumo, abra chamados e tenha suporte direto pelo aplicativo.</p>
-        </div>
-        <a href="https://mickaelfelipe2025.github.io/teste/" class="app-button">Assistir tutorial</a>
-    </div>
+<div class="video-grid">
 
-    <div class="app-card">
-        <div class="app-logo">Logo App</div>
-        <div class="app-info">
-            <h2>App Financeiro</h2>
-            <p>Visualize boletos, datas de vencimento e histórico de pagamentos de forma rápida.</p>
+    <!-- VÍDEO 1 -->
+    <a class="video-card" href="https://www.youtube.com/watch?v=OKpSAzB66hU" target="_blank">
+        <div class="video-thumb">
+            <img src="https://img.youtube.com/vi/OKpSAzB66hU/maxresdefault.jpg">
+            <div class="video-duration">15:00</div>
         </div>
-        <a href="#" class="app-button">Assistir tutorial</a>
-    </div>
+        <div class="video-info">
+            <div class="channel-logo">ON</div>
+            <div class="video-text">
+                <h3>Tutorial App Office Net – Primeiros passos</h3>
+                <span>Office Net • YouTube</span>
+            </div>
+        </div>
+    </a>
+
+    <!-- VÍDEO 2 -->
+    <a class="video-card" href="https://www.youtube.com/watch?v=GtV17lWjWFo" target="_blank">
+        <div class="video-thumb">
+            <img src="https://img.youtube.com/vi/GtV17lWjWFo/maxresdefault.jpg">
+            <div class="video-duration">12:40</div>
+        </div>
+        <div class="video-info">
+            <div class="channel-logo">ON</div>
+            <div class="video-text">
+                <h3>Como usar o Deezer – Guia completo</h3>
+                <span>Office Net • YouTube</span>
+            </div>
+        </div>
+    </a>
+
+    <!-- VÍDEO 3 -->
+    <a class="video-card" href="https://www.youtube.com/watch?v=o7exS0xj3v0" target="_blank">
+        <div class="video-thumb">
+            <img src="https://img.youtube.com/vi/o7exS0xj3v0/maxresdefault.jpg">
+            <div class="video-duration">09:18</div>
+        </div>
+        <div class="video-info">
+            <div class="channel-logo">ON</div>
+            <div class="video-text">
+                <h3>SKY+ – Como acessar e assistir</h3>
+                <span>Office Net • YouTube</span>
+            </div>
+        </div>
+    </a>
+
+    <!-- VÍDEO 4 -->
+    <a class="video-card" href="https://www.youtube.com/watch?v=wXRPw_ftaS4" target="_blank">
+        <div class="video-thumb">
+            <img src="https://img.youtube.com/vi/wXRPw_ftaS4/maxresdefault.jpg">
+            <div class="video-duration">11:52</div>
+        </div>
+        <div class="video-info">
+            <div class="channel-logo">ON</div>
+            <div class="video-text">
+                <h3>Paramount+ – Guia rápido para iniciantes</h3>
+                <span>Office Net • YouTube</span>
+            </div>
+        </div>
+    </a>
+
+</div>
 
 </main>
-
-<footer style="text-align:center; padding:25px; font-size:13px; color:#777;">
-    © 2025 Office Net
-</footer>
 
 </body>
 </html>
