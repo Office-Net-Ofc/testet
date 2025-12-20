@@ -65,40 +65,34 @@ header p {
     display: flex;
     align-items: center;
     gap: 25px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+
+    /* SOMBRA MAIS FINA */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+
     transition: 0.3s ease;
-    border: 1px solid rgba(0,0,0,0.04);
 }
 
 .app-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 16px 35px rgba(0,0,0,0.18);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.12);
 }
 
-/* LOGO APP - REFINADO */
+/* LOGO APP */
 .app-logo {
-    width: 90px;
-    height: 90px;
-    background: linear-gradient(145deg, #ffffff, #f0f0f0);
-    border-radius: 18px;
+    width: 80px;
+    height: 80px;
+    background: #fff;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05),
-                0 8px 20px rgba(0,0,0,0.08);
 }
 
 .app-logo img {
-    max-width: 65%;
-    max-height: 65%;
+    max-width: 70%;
+    max-height: 70%;
     object-fit: contain;
-    transition: transform 0.3s ease;
-}
-
-/* Micro interação elegante */
-.app-card:hover .app-logo img {
-    transform: scale(1.05);
 }
 
 /* INFO */
@@ -159,14 +153,13 @@ header p {
 
 <header>
     <div class="brand">Office Net</div>
-
     <h1>Tutoriais dos Sistemas</h1>
     <p>Aprenda a acessar e utilizar nossos sistemas</p>
 </header>
 
 <main class="container">
 
-    <!-- APP 1 - SISTEMA DE GERENCIAMENTO -->
+    <!-- APP 1 -->
     <div class="app-card">
         <div class="app-logo">
             <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/sgp.png" alt="Sistema de Gerenciamento">
@@ -185,7 +178,7 @@ header p {
         </a>
     </div>
 
-    <!-- APP 2 - CHAT BOT -->
+    <!-- APP 2 -->
     <div class="app-card">
         <div class="app-logo">
             <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/focus_chat.png" alt="Sistema de Chat Bot">
