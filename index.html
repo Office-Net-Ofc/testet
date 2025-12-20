@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Office Net | Curso - Onboarding</title>
+<title>Office Net | Aula</title>
 
 <style>
 /* ================= RESET ================= */
@@ -68,17 +68,22 @@ header h1 {
 /* ================= HERO ================= */
 .hero {
     max-width: 1200px;
-    margin: 50px auto 25px;
+    margin: 40px auto 20px;
     padding: 0 20px;
 }
 
+.hero span {
+    font-size: 13px;
+    color: var(--muted);
+}
+
 .hero h2 {
-    font-size: 34px;
-    margin-bottom: 8px;
+    font-size: 32px;
+    margin: 6px 0;
 }
 
 .hero p {
-    font-size: 16px;
+    font-size: 15px;
     color: var(--muted);
     max-width: 720px;
 }
@@ -90,13 +95,13 @@ header h1 {
     padding: 0 20px;
 }
 
-/* ================= VIDEO INTRO ================= */
-.intro-video {
+/* ================= VIDEO ================= */
+.video-card {
     background: var(--card);
     border-radius: 22px;
     padding: 24px;
     box-shadow: var(--shadow);
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     animation: fadeUp .6s ease forwards;
 }
 
@@ -110,93 +115,60 @@ header h1 {
 
 .video-wrapper iframe {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
-    border: 0;
+    border: none;
 }
 
-.intro-video h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
-.intro-video p {
-    font-size: 14px;
-    color: var(--muted);
-    margin-bottom: 16px;
-}
-
-/* ================= AULA CARD ================= */
-.lesson-card {
-    background: var(--card);
-    border-radius: 18px;
-    padding: 22px 26px;
-    margin-bottom: 18px;
+/* ================= ACTIONS ================= */
+.actions {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    box-shadow: var(--shadow);
-    opacity: 0;
-    transform: translateY(25px);
-    animation: fadeUp .6s ease forwards;
-    transition: .3s ease;
-    cursor: pointer;
+    margin-top: 22px;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
-.lesson-card:nth-child(1){animation-delay:.1s}
-.lesson-card:nth-child(2){animation-delay:.2s}
-.lesson-card:nth-child(3){animation-delay:.3s}
-.lesson-card:nth-child(4){animation-delay:.4s}
-.lesson-card:nth-child(5){animation-delay:.5s}
+.btn {
+    padding: 12px 22px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: .3s ease;
+    display: inline-block;
+}
 
-.lesson-card:hover {
-    transform: translateY(-4px);
+.btn-primary {
+    background: linear-gradient(90deg, var(--green), var(--gold));
+    color: #fff;
+}
+
+.btn-primary:hover {
+    transform: scale(1.05);
+}
+
+.btn-secondary {
+    border: 2px solid var(--green);
+    color: var(--green);
+}
+
+.btn-secondary:hover {
+    background: var(--green);
+    color: #fff;
 }
 
 /* ================= ANIMAÇÃO ================= */
 @keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
     to {
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-/* ================= INFO ================= */
-.lesson-info {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.lesson-number {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background: linear-gradient(90deg, var(--green), var(--gold));
-    color: #fff;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.lesson-text h3 {
-    font-size: 16px;
-    margin-bottom: 4px;
-}
-
-.lesson-text p {
-    font-size: 13px;
-    color: var(--muted);
-}
-
-/* ================= AÇÃO ================= */
-.lesson-action {
-    font-size: 13px;
-    font-weight: bold;
-    color: var(--green);
 }
 
 /* ================= FOOTER ================= */
@@ -209,18 +181,16 @@ footer {
 
 /* ================= RESPONSIVO ================= */
 @media (max-width: 768px) {
-    .lesson-card {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 14px;
-    }
-
-    .lesson-action {
-        align-self: flex-end;
-    }
-
     .hero h2 {
-        font-size: 28px;
+        font-size: 26px;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        text-align: center;
     }
 }
 </style>
@@ -232,21 +202,19 @@ footer {
     <div class="brand">
         <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/Logo_Branca_Pequena-sem-fundo.png">
     </div>
-    <h1>Curso</h1>
+    <h1>Aula</h1>
 </header>
 
 <section class="hero">
-    <h2>Onboarding Office Net</h2>
-    <p>Conheça a estrutura do curso, os objetivos de aprendizagem e o que será abordado em cada etapa da sua jornada na empresa.</p>
+    <span>Curso • Onboarding Office Net</span>
+    <h2>Aula 01 — Boas-vindas à Office Net</h2>
+    <p>Nesta aula você conhecerá a história da empresa, seus valores e a visão que norteia nosso trabalho diário.</p>
 </section>
 
 <main class="container">
 
-    <!-- VÍDEO INTRODUTÓRIO -->
-    <section class="intro-video">
-        <h3>Apresentação do Curso</h3>
-        <p>Neste vídeo você terá uma visão geral do conteúdo programático, metodologia e expectativas do curso.</p>
-
+    <!-- PLAYER -->
+    <div class="video-card">
         <div class="video-wrapper">
             <!-- TROQUE O ID DO VÍDEO -->
             <iframe 
@@ -254,62 +222,19 @@ footer {
                 allowfullscreen>
             </iframe>
         </div>
-    </section>
 
-    <!-- AULAS -->
-    <div class="lesson-card">
-        <div class="lesson-info">
-            <div class="lesson-number">01</div>
-            <div class="lesson-text">
-                <h3>Boas-vindas à Office Net</h3>
-                <p>Apresentação institucional e visão da empresa</p>
-            </div>
-        </div>
-        <div class="lesson-action">Assistir aula</div>
-    </div>
+        <!-- AÇÕES -->
+        <div class="actions">
+            <!-- VOLTAR -->
+            <a href="curso.html" class="btn btn-secondary">
+                ← Voltar para as aulas
+            </a>
 
-    <div class="lesson-card">
-        <div class="lesson-info">
-            <div class="lesson-number">02</div>
-            <div class="lesson-text">
-                <h3>Valores e Cultura Organizacional</h3>
-                <p>Como pensamos, agimos e atendemos</p>
-            </div>
+            <!-- PRÓXIMA AULA -->
+            <a href="aula02.html" class="btn btn-primary">
+                Próxima aula →
+            </a>
         </div>
-        <div class="lesson-action">Assistir aula</div>
-    </div>
-
-    <div class="lesson-card">
-        <div class="lesson-info">
-            <div class="lesson-number">03</div>
-            <div class="lesson-text">
-                <h3>Padrão de Atendimento ao Cliente</h3>
-                <p>Postura profissional e comunicação</p>
-            </div>
-        </div>
-        <div class="lesson-action">Assistir aula</div>
-    </div>
-
-    <div class="lesson-card">
-        <div class="lesson-info">
-            <div class="lesson-number">04</div>
-            <div class="lesson-text">
-                <h3>Sistemas Utilizados na Empresa</h3>
-                <p>Visão geral das ferramentas internas</p>
-            </div>
-        </div>
-        <div class="lesson-action">Assistir aula</div>
-    </div>
-
-    <div class="lesson-card">
-        <div class="lesson-info">
-            <div class="lesson-number">05</div>
-            <div class="lesson-text">
-                <h3>Encerramento e Próximos Passos</h3>
-                <p>Orientações finais e evolução interna</p>
-            </div>
-        </div>
-        <div class="lesson-action">Assistir aula</div>
     </div>
 
 </main>
