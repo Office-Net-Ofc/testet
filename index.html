@@ -28,14 +28,16 @@ header {
     position: relative;
 }
 
-/* NOME DA EMPRESA */
+/* LOGO HEADER */
 .brand {
     position: absolute;
     top: 18px;
     left: 25px;
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: 1px;
+}
+
+.brand img {
+    height: 38px;
+    width: auto;
 }
 
 /* TITULOS */
@@ -157,7 +159,6 @@ footer {
     .brand {
         position: static;
         margin-bottom: 15px;
-        display: block;
         text-align: center;
     }
 
@@ -176,7 +177,9 @@ footer {
 <body>
 
 <header>
-    <div class="brand">Office Net</div>
+    <div class="brand">
+        <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/Logo_Branca_Pequena-sem-fundo.png" alt="Office Net">
+    </div>
 
     <h1>Tutoriais dos Sistemas</h1>
     <p>Aprenda a acessar e utilizar nossos sistemas</p>
