@@ -68,7 +68,7 @@ header h1 {
 /* ================= HERO ================= */
 .hero {
     max-width: 1200px;
-    margin: 50px auto 30px;
+    margin: 50px auto 25px;
     padding: 0 20px;
 }
 
@@ -80,7 +80,7 @@ header h1 {
 .hero p {
     font-size: 16px;
     color: var(--muted);
-    max-width: 700px;
+    max-width: 720px;
 }
 
 /* ================= CONTAINER ================= */
@@ -88,6 +88,44 @@ header h1 {
     max-width: 1200px;
     margin: 30px auto 80px;
     padding: 0 20px;
+}
+
+/* ================= VIDEO INTRO ================= */
+.intro-video {
+    background: var(--card);
+    border-radius: 22px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 40px;
+    animation: fadeUp .6s ease forwards;
+}
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.intro-video h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.intro-video p {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 16px;
 }
 
 /* ================= AULA CARD ================= */
@@ -199,11 +237,26 @@ footer {
 
 <section class="hero">
     <h2>Onboarding Office Net</h2>
-    <p>Este curso apresenta a empresa, seus processos internos, padrões de atendimento e boas práticas para novos colaboradores.</p>
+    <p>Conheça a estrutura do curso, os objetivos de aprendizagem e o que será abordado em cada etapa da sua jornada na empresa.</p>
 </section>
 
 <main class="container">
 
+    <!-- VÍDEO INTRODUTÓRIO -->
+    <section class="intro-video">
+        <h3>Apresentação do Curso</h3>
+        <p>Neste vídeo você terá uma visão geral do conteúdo programático, metodologia e expectativas do curso.</p>
+
+        <div class="video-wrapper">
+            <!-- TROQUE O ID DO VÍDEO -->
+            <iframe 
+                src="https://www.youtube.com/embed/OKpSAzB66hU"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </section>
+
+    <!-- AULAS -->
     <div class="lesson-card">
         <div class="lesson-info">
             <div class="lesson-number">01</div>
