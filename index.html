@@ -4,9 +4,6 @@
 <meta charset="UTF-8">
 <title>Office Net | Tutoriais dos Aplicativos</title>
 
-<!-- FAVICON -->
-<link rel="icon" type="image/png" href="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/Office%20Net%20-%20Perfil.png">
-
 <style>
 /* RESET */
 * {
@@ -31,12 +28,39 @@ header {
     position: relative;
 }
 
-/* LOGO DA EMPRESA */
-.brand-logo {
+/* NOME DA EMPRESA */
+.brand {
     position: absolute;
-    top: 15px;
+    top: 18px;
     left: 25px;
-    height: 42px;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* BOTÃO YOUTUBE */
+.youtube-button {
+    position: absolute;
+    top: 18px;
+    right: 25px;
+    width: 44px;
+    height: 44px;
+    background-color: #FF0000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.youtube-button:hover {
+    transform: scale(1.1);
+}
+
+.youtube-button img {
+    width: 22px;
+    height: 22px;
 }
 
 /* TITULOS */
@@ -50,21 +74,10 @@ header p {
     opacity: 0.95;
 }
 
-/* FAIXA AVISO */
-.notice-bar {
-    background-color: #FFF4D6;
-    color: #7A5A00;
-    text-align: center;
-    padding: 6px 10px;
-    font-size: 13px;
-    font-weight: 500;
-    border-bottom: 1px solid #F0E2B6;
-}
-
 /* CONTAINER */
 .container {
     max-width: 900px;
-    margin: 50px auto 60px;
+    margin: 60px auto;
     padding: 0 20px;
 }
 
@@ -90,18 +103,14 @@ header p {
 .app-logo {
     width: 80px;
     height: 80px;
-    background: #F0FAF0;
+    background: #eee;
     border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 12px;
+    color: #777;
     flex-shrink: 0;
-}
-
-.app-logo img {
-    max-width: 65px;
-    max-height: 65px;
-    object-fit: contain;
 }
 
 /* INFO */
@@ -139,10 +148,16 @@ header p {
 
 /* RESPONSIVO */
 @media (max-width: 768px) {
-    .brand-logo {
+    .brand {
         position: static;
+        margin-bottom: 15px;
         display: block;
-        margin: 0 auto 15px;
+        text-align: center;
+    }
+
+    .youtube-button {
+        top: 15px;
+        right: 15px;
     }
 
     .app-card {
@@ -160,79 +175,39 @@ header p {
 <body>
 
 <header>
-    <img
-        src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/Logo_Branca_Pequena-sem-fundo.png"
-        alt="Office Net"
-        class="brand-logo">
+    <div class="brand">Office Net</div>
 
-    <h1>Tutoriais dos Aplicativos</h1>
-    <p>Aprenda a acessar e utilizar nossos aplicativos</p>
+    <!-- BOTÃO YOUTUBE -->
+    <a 
+        href="https://www.youtube.com/watch?v=OKpSAzB66hU"
+        target="_blank"
+        class="youtube-button"
+        title="Assistir no YouTube">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/YouTube_social_white_squircle_%282017%29.svg" alt="YouTube">
+    </a>
+
+    <h1>Tutoriais dos Sistemas</h1>
+    <p>Aprenda a acessar e utilizar nossos sistemas</p>
 </header>
-
-<div class="notice-bar">
-    📢 Em breve mais vídeos estarão disponíveis para você
-</div>
 
 <main class="container">
 
     <div class="app-card">
-        <div class="app-logo">
-            <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/mwu_provedor-removebg-preview.png" alt="App Provedor">
-        </div>
+        <div class="app-logo">Logo App</div>
         <div class="app-info">
             <h2>App do Cliente Office Net</h2>
             <p>Consulte faturas, acompanhe consumo, abra chamados e tenha suporte direto pelo aplicativo.</p>
         </div>
-        <a href="https://office-net-ofc.github.io/Pagina-de-treinamentos/Tutoriais-clientes/Clientes-video-aulas/app-provedor-video-aulas-clientes-index.html"
-           class="app-button">Assistir tutorial</a>
+        <a href="https://mickaelfelipe2025.github.io/teste/" class="app-button">Assistir tutorial</a>
     </div>
 
     <div class="app-card">
-        <div class="app-logo">
-            <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/hbo_max-removebg-preview.png" alt="HBO Max">
-        </div>
+        <div class="app-logo">Logo App</div>
         <div class="app-info">
-            <h2>HBO Max</h2>
-            <p>Aprenda como acessar, criar perfil e utilizar todos os recursos da plataforma HBO Max.</p>
+            <h2>App Financeiro</h2>
+            <p>Visualize boletos, datas de vencimento e histórico de pagamentos de forma rápida.</p>
         </div>
-        <a href="https://office-net-ofc.github.io/Pagina-de-treinamentos/Tutoriais-clientes/Clientes-video-aulas/hbo-max-video-aula-index.html"
-           class="app-button">Assistir tutorial</a>
-    </div>
-
-    <div class="app-card">
-        <div class="app-logo">
-            <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/sky+-removebg-preview.png" alt="sky+">
-        </div>
-        <div class="app-info">
-            <h2>SKY+</h2>
-            <p>Veja como acessar o conteúdo da SKY de forma simples e rápida.</p>
-        </div>
-        <a href="https://office-net-ofc.github.io/Pagina-de-treinamentos/Tutoriais-clientes/Clientes-video-aulas/sky+-video-aula-index.html"
-           class="app-button">Assistir tutorial</a>
-    </div>
-
-    <div class="app-card">
-        <div class="app-logo">
-            <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/deezer-removebg-preview.png" alt="Deezer">
-        </div>
-        <div class="app-info">
-            <h2>Deezer</h2>
-            <p>Aprenda a usar o Deezer para ouvir músicas, criar playlists e aproveitar todos os benefícios.</p>
-        </div>
-        <a href="https://office-net-ofc.github.io/Pagina-de-treinamentos/Tutoriais-clientes/Clientes-video-aulas/deezer-video-aula-index.html"
-           class="app-button">Assistir tutorial</a>
-    </div>
-
-    <div class="app-card">
-        <div class="app-logo">
-            <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/paramount.png" alt="Paramount+">
-        </div>
-        <div class="app-info">
-            <h2>Paramount+</h2>
-            <p>Saiba como acessar filmes, séries e conteúdos exclusivos na plataforma Paramount+.</p>
-        </div>
-        <a href="https://office-net-ofc.github.io/Pagina-de-treinamentos/Tutoriais-clientes/Clientes-video-aulas/paramount+-video-aula-index.html"
-           class="app-button">Assistir tutorial</a>
+        <a href="#" class="app-button">Assistir tutorial</a>
     </div>
 
 </main>
