@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Office Net | Tutoriais dos Aplicativos</title>
+<title>Office Net | Cursos Internos</title>
 
 <style>
 /* RESET */
@@ -22,126 +22,105 @@ body {
 /* HEADER */
 header {
     background: linear-gradient(90deg, #3CAA28, #BE961E);
-    color: white;
-    padding: 50px 25px 40px;
-    text-align: center;
+    padding: 20px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
 }
 
-/* LOGO HEADER */
+/* LOGO */
 .brand {
     position: absolute;
-    top: 18px;
     left: 25px;
 }
 
 .brand img {
-    height: 38px;
-    width: auto;
+    height: 40px;
 }
 
-/* TITULOS */
+/* TITULO */
 header h1 {
-    font-size: 32px;
-    margin-bottom: 10px;
+    font-size: 22px;
+    color: #fff;
 }
 
-header p {
-    font-size: 15px;
-    opacity: 0.95;
-}
-
-header .subtitle {
-    font-size: 13px;
-    opacity: 0.85;
-    margin-top: 6px;
+/* SUBHEADER */
+.subheader {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 14px;
+    color: #5a6b5a;
 }
 
 /* CONTAINER */
 .container {
-    max-width: 900px;
-    margin: 60px auto;
+    max-width: 1300px;
+    margin: 35px auto 60px;
     padding: 0 20px;
 }
 
-/* CARD APP */
-.app-card {
-    background: linear-gradient(180deg, #ffffff, #fdfdfd);
-    border-radius: 18px;
-    padding: 32px;
-    margin-bottom: 28px;
-    display: flex;
-    align-items: center;
-    gap: 25px;
-
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
+/* GRID */
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 26px;
 }
 
-.app-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 22px rgba(0,0,0,0.14);
+/* CARD */
+.course-card {
+    text-decoration: none;
+    color: inherit;
 }
 
-/* LOGO APP */
-.app-logo {
-    width: 82px;
-    height: 82px;
-    background: #ffffff;
-    border-radius: 18px;
-    padding: 10px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+/* CAPA */
+.course-cover {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
 }
 
-.app-logo img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    transition: transform 0.3s ease;
+.course-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.4s ease;
 }
 
-.app-card:hover .app-logo img {
+.course-card:hover img {
     transform: scale(1.08);
 }
 
-/* INFO */
-.app-info {
-    flex: 1;
+/* OVERLAY */
+.course-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.65), transparent 60%);
 }
 
-.app-info h2 {
-    font-size: 21px;
+/* BADGE */
+.badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(0,0,0,0.75);
+    color: #fff;
+    padding: 6px 12px;
+    font-size: 11px;
+    border-radius: 20px;
     font-weight: 600;
-    margin-bottom: 8px;
-    color: #1f2d1f;
 }
 
-.app-info p {
-    font-size: 14px;
-    color: #6b6b6b;
-    line-height: 1.6;
-}
-
-/* BOTÃO */
-.app-button {
-    padding: 12px 22px;
-    background: linear-gradient(90deg, #3CAA28, #BE961E);
-    color: white;
-    text-decoration: none;
-    border-radius: 25px;
-    font-size: 14px;
+/* TITULO DO CURSO */
+.course-title {
+    margin-top: 12px;
+    font-size: 15px;
     font-weight: 600;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-}
-
-.app-button:hover {
-    transform: scale(1.06);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+    line-height: 1.4;
 }
 
 /* FOOTER */
@@ -150,25 +129,23 @@ footer {
     padding: 30px;
     font-size: 13px;
     color: #777;
-    background: #ffffff;
+    background: #fff;
     border-top: 1px solid #e0e0e0;
 }
 
 /* RESPONSIVO */
 @media (max-width: 768px) {
+    header {
+        flex-direction: column;
+    }
+
     .brand {
         position: static;
-        margin-bottom: 15px;
-        text-align: center;
+        margin-bottom: 10px;
     }
 
-    .app-card {
-        flex-direction: column;
+    header h1 {
         text-align: center;
-    }
-
-    .app-button {
-        margin-top: 15px;
     }
 }
 </style>
@@ -178,58 +155,73 @@ footer {
 
 <header>
     <div class="brand">
-        <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/Logo_Branca_Pequena-sem-fundo.png" alt="Office Net">
+        <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/Logo_Branca_Pequena-sem-fundo.png">
     </div>
-
-    <h1>Tutoriais dos Sistemas</h1>
-    <p>Aprenda a acessar e utilizar nossos sistemas</p>
-    <div class="subtitle">Portal interno • Acesso rápido e seguro</div>
+    <h1>Cursos Internos</h1>
 </header>
+
+<div class="subheader">
+    Capacitação contínua • Treinamentos exclusivos para colaboradores
+</div>
 
 <main class="container">
 
-    <!-- APP 1 -->
-    <div class="app-card">
-        <div class="app-logo">
-            <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/sgp.png" alt="Sistema de Gerenciamento">
-        </div>
+    <div class="course-grid">
 
-        <div class="app-info">
-            <h2>Sistema de Gerenciamento Office Net</h2>
-            <p>
-                Configure ações, automatize processos e otimize a gestão
-                operacional do dia a dia.
-            </p>
-        </div>
-
-        <a href="https://mickaelfelipe2025.github.io/teste/" class="app-button">
-            Assistir tutoriais
+        <!-- CURSO 1 -->
+        <a href="#" class="course-card">
+            <div class="course-cover">
+                <img src="https://img.youtube.com/vi/OKpSAzB66hU/hqdefault.jpg">
+                <div class="course-overlay"></div>
+                <div class="badge">Obrigatório</div>
+            </div>
+            <div class="course-title">
+                Integração Office Net – Boas-vindas e processos internos
+            </div>
         </a>
-    </div>
 
-    <!-- APP 2 -->
-    <div class="app-card">
-        <div class="app-logo">
-            <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/focus_chat.png" alt="Sistema de Chat Bot">
-        </div>
-
-        <div class="app-info">
-            <h2>Sistema de Chat-Bot Office Net</h2>
-            <p>
-                Automatize atendimentos, agilize respostas e melhore a
-                experiência do cliente.
-            </p>
-        </div>
-
-        <a href="#" class="app-button">
-            Assistir tutoriais
+        <!-- CURSO 2 -->
+        <a href="#" class="course-card">
+            <div class="course-cover">
+                <img src="https://img.youtube.com/vi/GtV17lWjWFo/hqdefault.jpg">
+                <div class="course-overlay"></div>
+                <div class="badge">Suporte</div>
+            </div>
+            <div class="course-title">
+                Atendimento ao Cliente – Padrão Office Net
+            </div>
         </a>
+
+        <!-- CURSO 3 -->
+        <a href="#" class="course-card">
+            <div class="course-cover">
+                <img src="https://img.youtube.com/vi/o7exS0xj3v0/hqdefault.jpg">
+                <div class="course-overlay"></div>
+                <div class="badge">Técnico</div>
+            </div>
+            <div class="course-title">
+                Fundamentos de Redes e FTTH
+            </div>
+        </a>
+
+        <!-- CURSO 4 -->
+        <a href="#" class="course-card">
+            <div class="course-cover">
+                <img src="https://img.youtube.com/vi/wXRPw_ftaS4/hqdefault.jpg">
+                <div class="course-overlay"></div>
+                <div class="badge">Avançado</div>
+            </div>
+            <div class="course-title">
+                Segurança da Informação e Boas Práticas
+            </div>
+        </a>
+
     </div>
 
 </main>
 
 <footer>
-    © 2025 Office Net • Todos os direitos reservados
+    © 2025 Office Net • Portal de Capacitação Interna
 </footer>
 
 </body>
