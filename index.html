@@ -2,9 +2,10 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Office Net | Tutoriais dos Aplicativos</title>
+<title>Office Net | Tutoriais</title>
 
 <style>
+/* RESET */
 * {
     margin: 0;
     padding: 0;
@@ -21,34 +22,41 @@ body {
 /* HEADER */
 header {
     background: linear-gradient(90deg, #3CAA28, #BE961E);
-    color: white;
-    padding: 45px 25px;
-    text-align: center;
+    padding: 18px 25px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* TITULOS */
+/* LOGO */
+.brand {
+    position: absolute;
+    left: 25px;
+}
+
+.brand img {
+    height: 40px;
+}
+
+/* TÍTULO */
 header h1 {
-    font-size: 30px;
-    margin-bottom: 8px;
-}
-
-header p {
-    font-size: 15px;
-    opacity: 0.95;
+    font-size: 22px;
+    color: #fff;
 }
 
 /* CONTAINER */
 .container {
-    max-width: 1400px;
-    margin: 50px auto;
-    padding: 0 25px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
 }
 
 /* GRID ESTILO YOUTUBE */
 .video-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 22px;
 }
 
 /* CARD */
@@ -58,49 +66,47 @@ header p {
 }
 
 /* THUMB */
-.video-thumb {
-    position: relative;
-    border-radius: 16px;
+.thumbnail {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 14px;
     overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    background: #000;
+}
+
+.thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     transition: 0.3s ease;
 }
 
-.video-card:hover .video-thumb {
-    transform: translateY(-4px);
+.video-card:hover img {
+    transform: scale(1.05);
 }
 
-/* IMAGEM */
-.video-thumb img {
-    width: 100%;
-    display: block;
-}
-
-/* DURAÇÃO */
-.video-duration {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    background: rgba(0,0,0,0.85);
-    color: white;
-    font-size: 12px;
-    padding: 3px 7px;
-    border-radius: 6px;
-}
-
-/* TITULO DO VÍDEO */
+/* TÍTULO */
 .video-title {
-    margin-top: 12px;
-    font-size: 15px;
+    margin-top: 10px;
+    font-size: 14px;
     font-weight: 600;
     line-height: 1.4;
-    color: #1f2d1f;
 }
 
 /* RESPONSIVO */
 @media (max-width: 768px) {
+    header {
+        flex-direction: column;
+    }
+
+    .brand {
+        position: static;
+        margin-bottom: 10px;
+    }
+
     header h1 {
-        font-size: 24px;
+        font-size: 20px;
+        text-align: center;
     }
 }
 </style>
@@ -109,61 +115,68 @@ header p {
 <body>
 
 <header>
-    <h1>Tutoriais dos Aplicativos</h1>
-    <p>Aprenda a acessar e utilizar nossos aplicativos</p>
+    <div class="brand">
+        <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/Logo_Branca_Pequena-sem-fundo.png" alt="Office Net">
+    </div>
+
+    <h1>Tutoriais dos Sistemas</h1>
 </header>
 
 <main class="container">
 
-<div class="video-grid">
+    <div class="video-grid">
 
-    <!-- VÍDEO 1 -->
-    <a class="video-card" href="https://www.youtube.com/watch?v=OKpSAzB66hU" target="_blank">
-        <div class="video-thumb">
-            <img src="https://img.youtube.com/vi/OKpSAzB66hU/maxresdefault.jpg">
-            <div class="video-duration">15:00</div>
-        </div>
-        <div class="video-title">
-            Tutorial App Office Net – Primeiros passos
-        </div>
-    </a>
+        <!-- VÍDEO 1 -->
+        <a class="video-card" target="_blank"
+           href="https://www.youtube.com/watch?v=OKpSAzB66hU">
+            <div class="thumbnail">
+                <img src="https://img.youtube.com/vi/OKpSAzB66hU/hqdefault.jpg">
+            </div>
+            <div class="video-title">
+                Tutorial MAX – Configuração e uso do sistema
+            </div>
+        </a>
 
-    <!-- VÍDEO 2 -->
-    <a class="video-card" href="https://www.youtube.com/watch?v=GtV17lWjWFo" target="_blank">
-        <div class="video-thumb">
-            <img src="https://img.youtube.com/vi/GtV17lWjWFo/maxresdefault.jpg">
-            <div class="video-duration">12:40</div>
-        </div>
-        <div class="video-title">
-            Como usar o Deezer – Guia completo
-        </div>
-    </a>
+        <!-- VÍDEO 2 -->
+        <a class="video-card" target="_blank"
+           href="https://www.youtube.com/watch?v=GtV17lWjWFo">
+            <div class="thumbnail">
+                <img src="https://img.youtube.com/vi/GtV17lWjWFo/hqdefault.jpg">
+            </div>
+            <div class="video-title">
+                Tutorial Deezer – Recursos e navegação
+            </div>
+        </a>
 
-    <!-- VÍDEO 3 -->
-    <a class="video-card" href="https://www.youtube.com/watch?v=o7exS0xj3v0" target="_blank">
-        <div class="video-thumb">
-            <img src="https://img.youtube.com/vi/o7exS0xj3v0/maxresdefault.jpg">
-            <div class="video-duration">09:18</div>
-        </div>
-        <div class="video-title">
-            SKY+ – Como acessar e assistir
-        </div>
-    </a>
+        <!-- VÍDEO 3 -->
+        <a class="video-card" target="_blank"
+           href="https://www.youtube.com/watch?v=o7exS0xj3v0">
+            <div class="thumbnail">
+                <img src="https://img.youtube.com/vi/o7exS0xj3v0/hqdefault.jpg">
+            </div>
+            <div class="video-title">
+                Tutorial Sky+ – Primeiros passos
+            </div>
+        </a>
 
-    <!-- VÍDEO 4 -->
-    <a class="video-card" href="https://www.youtube.com/watch?v=wXRPw_ftaS4" target="_blank">
-        <div class="video-thumb">
-            <img src="https://img.youtube.com/vi/wXRPw_ftaS4/maxresdefault.jpg">
-            <div class="video-duration">11:52</div>
-        </div>
-        <div class="video-title">
-            Paramount+ – Guia rápido para iniciantes
-        </div>
-    </a>
+        <!-- VÍDEO 4 -->
+        <a class="video-card" target="_blank"
+           href="https://www.youtube.com/watch?v=wXRPw_ftaS4">
+            <div class="thumbnail">
+                <img src="https://img.youtube.com/vi/wXRPw_ftaS4/hqdefault.jpg">
+            </div>
+            <div class="video-title">
+                Tutorial Paramount+ – Acesso e funcionalidades
+            </div>
+        </a>
 
-</div>
+    </div>
 
 </main>
+
+<footer style="text-align:center; padding:25px; font-size:13px; color:#777;">
+    © 2025 Office Net
+</footer>
 
 </body>
 </html>
