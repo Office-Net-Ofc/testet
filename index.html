@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Office Net | Treinamentos Internos</title>
+<title>Office Net | Catálogo de Cursos</title>
 
 <style>
 /* ================= RESET ================= */
@@ -18,10 +18,10 @@
     --bg: #F0FAF0;
     --text: #1f2d1f;
     --card: #ffffff;
-    --muted: #666;
+    --muted: #5f6f5f;
     --green: #3CAA28;
     --gold: #BE961E;
-    --shadow: 0 10px 25px rgba(0,0,0,0.08);
+    --shadow: 0 14px 35px rgba(0,0,0,0.1);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -29,8 +29,8 @@
         --bg: #0f1a12;
         --text: #e8f5e8;
         --card: #16241a;
-        --muted: #aaa;
-        --shadow: 0 12px 30px rgba(0,0,0,0.4);
+        --muted: #9fb3a0;
+        --shadow: 0 18px 40px rgba(0,0,0,0.45);
     }
 }
 
@@ -38,13 +38,13 @@
 body {
     background: var(--bg);
     color: var(--text);
-    transition: background .4s ease, color .4s ease;
+    transition: .4s ease;
 }
 
 /* ================= HEADER ================= */
 header {
     background: linear-gradient(90deg, var(--green), var(--gold));
-    padding: 22px 25px;
+    padding: 26px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -62,120 +62,135 @@ header {
 
 header h1 {
     color: #fff;
-    font-size: 22px;
-    letter-spacing: .5px;
+    font-size: 24px;
 }
 
-/* ================= INTRO ================= */
-.intro {
+/* ================= HERO ================= */
+.hero {
     max-width: 1200px;
-    margin: 40px auto 10px;
+    margin: 60px auto 30px;
     padding: 0 20px;
 }
 
-.intro h2 {
-    font-size: 24px;
-    margin-bottom: 6px;
+.hero h2 {
+    font-size: 36px;
+    margin-bottom: 10px;
 }
 
-.intro p {
+.hero p {
+    font-size: 17px;
     color: var(--muted);
-    font-size: 15px;
+    max-width: 650px;
 }
 
 /* ================= GRID ================= */
 .container {
     max-width: 1200px;
-    margin: 30px auto 60px;
+    margin: 40px auto 80px;
     padding: 0 20px;
 }
 
-.video-grid {
+.course-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
 }
 
 /* ================= CARD ================= */
-.video-card {
+.course-card {
+    background: var(--card);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transform: translateY(40px);
+    opacity: 0;
+    animation: reveal .8s ease forwards;
     text-decoration: none;
     color: inherit;
-    opacity: 0;
-    transform: translateY(25px);
-    animation: fadeUp .7s ease forwards;
 }
 
-.video-card:nth-child(1){animation-delay:.1s}
-.video-card:nth-child(2){animation-delay:.2s}
-.video-card:nth-child(3){animation-delay:.3s}
-.video-card:nth-child(4){animation-delay:.4s}
+.course-card:nth-child(1){animation-delay:.1s}
+.course-card:nth-child(2){animation-delay:.2s}
+.course-card:nth-child(3){animation-delay:.3s}
 
-@keyframes fadeUp {
+@keyframes reveal {
     to {
-        opacity: 1;
         transform: translateY(0);
+        opacity: 1;
     }
 }
 
-/* ================= THUMB ================= */
-.thumbnail {
+/* ================= COVER ================= */
+.course-cover {
     position: relative;
-    aspect-ratio: 16 / 9;
-    border-radius: 16px;
+    height: 180px;
     overflow: hidden;
-    background: #000;
-    box-shadow: var(--shadow);
 }
 
-.thumbnail img {
+.course-cover img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform .6s ease;
+    transition: .6s ease;
 }
 
-.video-card:hover img {
-    transform: scale(1.08);
+.course-card:hover img {
+    transform: scale(1.12);
 }
 
-/* ================= BADGES ================= */
-.badge {
+/* ================= TAG ================= */
+.tag {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    background: rgba(0,0,0,.75);
+    top: 14px;
+    left: 14px;
+    background: rgba(0,0,0,.7);
     color: #fff;
-    padding: 4px 10px;
-    font-size: 11px;
+    padding: 6px 14px;
     border-radius: 20px;
+    font-size: 12px;
     backdrop-filter: blur(6px);
 }
 
-/* ================= TITLE ================= */
-.video-title {
-    margin-top: 10px;
+/* ================= INFO ================= */
+.course-info {
+    padding: 22px;
+}
+
+.course-info h3 {
+    font-size: 18px;
+    margin-bottom: 6px;
+}
+
+.course-info p {
     font-size: 14px;
-    font-weight: 600;
-    line-height: 1.4;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+/* ================= CTA ================= */
+.course-action {
+    margin-top: 16px;
+    display: inline-block;
+    padding: 10px 18px;
+    background: linear-gradient(90deg, var(--green), var(--gold));
+    color: #fff;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: bold;
 }
 
 /* ================= FOOTER ================= */
 footer {
     text-align: center;
-    padding: 25px;
+    padding: 30px;
     font-size: 13px;
     color: var(--muted);
 }
 
 /* ================= RESPONSIVO ================= */
 @media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .brand {
-        position: static;
+    .hero h2 {
+        font-size: 28px;
     }
 }
 </style>
@@ -187,48 +202,52 @@ footer {
     <div class="brand">
         <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/Logo_Branca_Pequena-sem-fundo.png">
     </div>
-    <h1>Treinamentos Internos</h1>
+    <h1>Cursos Internos</h1>
 </header>
 
-<section class="intro">
+<section class="hero">
     <h2>Universidade Office Net</h2>
-    <p>Capacitação interna para padronizar processos, elevar qualidade e formar profissionais de alto nível.</p>
+    <p>Explore os cursos internos desenvolvidos para padronizar processos, elevar o nível técnico e formar profissionais de excelência.</p>
 </section>
 
 <main class="container">
 
-    <div class="video-grid">
+    <div class="course-grid">
 
-        <a class="video-card" href="#">
-            <div class="thumbnail">
-                <span class="badge">Obrigatório</span>
+        <a href="#" class="course-card">
+            <div class="course-cover">
+                <span class="tag">Obrigatório</span>
                 <img src="https://img.youtube.com/vi/OKpSAzB66hU/hqdefault.jpg">
             </div>
-            <div class="video-title">Onboarding Office Net – Introdução</div>
+            <div class="course-info">
+                <h3>Onboarding Office Net</h3>
+                <p>Conheça a empresa, processos internos e padrões de atendimento.</p>
+                <span class="course-action">Ver curso</span>
+            </div>
         </a>
 
-        <a class="video-card" href="#">
-            <div class="thumbnail">
-                <span class="badge">Técnico</span>
+        <a href="#" class="course-card">
+            <div class="course-cover">
+                <span class="tag">Técnico</span>
                 <img src="https://img.youtube.com/vi/GtV17lWjWFo/hqdefault.jpg">
             </div>
-            <div class="video-title">Sistema de Gerenciamento – Operação</div>
+            <div class="course-info">
+                <h3>Sistema de Gerenciamento</h3>
+                <p>Aprenda a operar o sistema interno com eficiência e segurança.</p>
+                <span class="course-action">Ver curso</span>
+            </div>
         </a>
 
-        <a class="video-card" href="#">
-            <div class="thumbnail">
-                <span class="badge">Novo</span>
+        <a href="#" class="course-card">
+            <div class="course-cover">
+                <span class="tag">Atendimento</span>
                 <img src="https://img.youtube.com/vi/o7exS0xj3v0/hqdefault.jpg">
             </div>
-            <div class="video-title">Atendimento ao Cliente – Boas Práticas</div>
-        </a>
-
-        <a class="video-card" href="#">
-            <div class="thumbnail">
-                <span class="badge">Técnico</span>
-                <img src="https://img.youtube.com/vi/wXRPw_ftaS4/hqdefault.jpg">
+            <div class="course-info">
+                <h3>Atendimento ao Cliente</h3>
+                <p>Boas práticas, postura profissional e excelência no suporte.</p>
+                <span class="course-action">Ver curso</span>
             </div>
-            <div class="video-title">Procedimentos Técnicos FTTH</div>
         </a>
 
     </div>
@@ -236,7 +255,7 @@ footer {
 </main>
 
 <footer>
-    © 2025 Office Net — Plataforma Interna
+    © 2025 Office Net — Universidade Corporativa
 </footer>
 
 </body>
