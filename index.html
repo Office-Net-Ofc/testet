@@ -22,27 +22,33 @@ body {
 /* HEADER */
 header {
     background: linear-gradient(90deg, #3CAA28, #BE961E);
-    padding: 18px 25px;
+    padding: 22px 25px 28px;
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
 }
 
 /* LOGO */
 .brand {
     position: absolute;
     left: 25px;
+    top: 22px;
 }
 
 .brand img {
     height: 40px;
 }
 
-/* TÍTULO */
+/* TÍTULOS */
 header h1 {
     font-size: 22px;
     color: #fff;
+    margin-bottom: 6px;
+}
+
+header p {
+    font-size: 14px;
+    color: #f1f1f1;
+    opacity: 0.95;
 }
 
 /* CONTAINER */
@@ -85,7 +91,7 @@ header h1 {
     transform: scale(1.05);
 }
 
-/* TÍTULO */
+/* TÍTULO DO VÍDEO */
 .video-title {
     margin-top: 10px;
     font-size: 14px;
@@ -95,18 +101,13 @@ header h1 {
 
 /* RESPONSIVO */
 @media (max-width: 768px) {
-    header {
-        flex-direction: column;
-    }
-
     .brand {
         position: static;
         margin-bottom: 10px;
     }
 
-    header h1 {
-        font-size: 20px;
-        text-align: center;
+    header {
+        padding-top: 25px;
     }
 }
 </style>
@@ -120,6 +121,7 @@ header h1 {
     </div>
 
     <h1>Tutoriais dos Sistemas</h1>
+    <p>Aprenda a acessar e utilizar nossos sistemas</p>
 </header>
 
 <main class="container">
