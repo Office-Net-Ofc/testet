@@ -2,296 +2,211 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Office Net | Portal Interno</title>
+<title>Confirmação de Presença - Pedro Dômini</title>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Arial, sans-serif;
-}
-
 body {
-    background-color: #F0FAF0;
-    color: #1f2d1f;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f7f2e8;
+    min-height: 100vh;
+    margin: 0;
     overflow-x: hidden;
 }
 
-/* ================= HEADER ================= */
-header {
-    position: relative;
-    background: linear-gradient(270deg, #3CAA28, #BE961E, #3CAA28);
-    background-size: 600% 600%;
-    animation: gradientMove 14s ease infinite;
-    color: white;
-    text-align: center;
-    padding: 90px 20px 80px;
-}
-
-@keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* LOGO */
-.header-logo {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    animation: fadeSlide 1.2s ease forwards;
-}
-
-.header-logo img {
-    height: 55px;
-}
-
-header h1 {
-    font-size: 34px;
-    margin-bottom: 12px;
-    opacity: 0;
-    animation: fadeUp 1s ease forwards;
-    animation-delay: .4s;
-}
-
-header p {
-    font-size: 17px;
-    opacity: 0;
-    animation: fadeUp 1s ease forwards;
-    animation-delay: .7s;
-}
-
-header .frase {
-    margin-top: 18px;
-    font-size: 15px;
-    font-style: italic;
-    opacity: 0;
-    animation: fadeUp 1s ease forwards;
-    animation-delay: 1s;
-}
-
-@keyframes fadeUp {
-    from { opacity: 0; transform: translateY(25px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeSlide {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-
-/* ================= CONTAINER ================= */
-.container {
-    max-width: 1100px;
-    margin: 80px auto;
-    padding: 0 20px;
-}
-
-/* SCROLL ANIMATION */
-.reveal {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: all .8s ease;
-}
-
-.reveal.active {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* ================= SECTIONS ================= */
-.info {
-    background: white;
-    padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    margin-bottom: 60px;
-}
-
-.info h2 {
-    color: #3CAA28;
-    margin-bottom: 20px;
-    font-size: 26px;
-}
-
-.info ul {
-    list-style: none;
-}
-
-.info li {
-    margin-bottom: 12px;
-    font-size: 16px;
-    padding-left: 22px;
-    position: relative;
-}
-
-.info li::before {
-    content: "•";
-    color: #BE961E;
-    font-size: 24px;
-    position: absolute;
-    left: 0;
-    top: -2px;
-}
-
-.aviso {
-    background: #fff8e6;
-    border-left: 6px solid #BE961E;
-    padding: 18px 25px;
-    border-radius: 10px;
-    margin-bottom: 60px;
-    font-size: 15px;
-}
-
-/* ================= BUTTONS ================= */
-.buttons {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 30px;
-}
-
-.button {
-    position: relative;
-    background: white;
-    border: 2px solid #3CAA28;
-    border-radius: 18px;
-    padding: 50px 30px;
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    text-decoration: none;
-    color: #1f2d1f;
-    transition: all 0.35s ease;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.1);
-    overflow: hidden;
-}
-
-.button::after {
-    content: "";
-    position: absolute;
+/* Área da animação das folhas */
+.folhas {
+    position: fixed;
     top: 0;
-    left: -100%;
+    left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255,255,255,.4), transparent);
-    transition: all .6s ease;
+    pointer-events: none;
+    z-index: 1;
 }
 
-.button:hover::after {
-    left: 100%;
+/* Estilo das folhas */
+.folha {
+    position: absolute;
+    width: 28px;
+    opacity: 0.6;
+    animation: cair linear infinite;
 }
 
-.button span {
+/* Animação */
+@keyframes cair {
+    0% { transform: translateY(-50px) rotate(0deg); }
+    100% { transform: translateY(110vh) rotate(360deg); }
+}
+
+/* Container principal */
+.container {
+    position: relative;
+    z-index: 2;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 18px;
+    width: 100%;
+    max-width: 440px;
+    margin: 40px auto;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    border: 4px solid #2f7d32;
+}
+
+/* Imagem do topo */
+.header-img {
+    width: 100%;
+    max-width: 340px;
     display: block;
-    font-size: 14px;
-    margin-top: 12px;
-    color: #555;
+    margin: 0 auto 20px;
 }
 
-.button:hover {
-    background-color: #3CAA28;
-    color: white;
-    transform: translateY(-10px) scale(1.02);
-}
-
-.button:hover span {
-    color: #f0faf0;
-}
-
-.button-premium {
-    background: linear-gradient(135deg, #BE961E, #3CAA28);
-    border: none;
-    color: white;
-}
-
-/* ================= FOOTER ================= */
-footer {
-    margin-top: 90px;
+/* Textos */
+h2 {
     text-align: center;
-    padding: 25px;
-    font-size: 13px;
-    color: #777;
-    border-top: 1px solid #ddd;
+    color: #2f7d32;
+    margin-bottom: 20px;
 }
 
-/* MOBILE */
-@media (max-width: 600px) {
-    .header-logo img {
-        height: 42px;
-    }
+label {
+    font-weight: 600;
+    margin-top: 18px;
+    display: block;
+    color: #4e342e;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: 1px solid #cfcfcf;
+    font-size: 15px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button {
+    margin-top: 25px;
+    width: 100%;
+    padding: 15px;
+    background-color: #2f7d32;
+    color: white;
+    font-size: 17px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #256428;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-    <div class="header-logo">
-        <img src="https://office-net-ofc.github.io/Pagina-de-treinamentos/img/Logo_Branca_Pequena-sem-fundo.png" alt="Logo Office Net">
-    </div>
+<!-- Folhas caindo -->
+<div class="folhas" id="folhas"></div>
 
-    <h1>Portal Interno Office Net</h1>
-    <p>Central de treinamentos e orientações corporativas</p>
-    <div class="frase">“Conhecimento certo gera atendimento excelente.”</div>
-</header>
+<div class="container">
 
-<main class="container">
+    <!-- Imagem do convite -->
+    <img 
+      src="https://mickaelfelipe2025.github.io/Teste-Office-Net/pagina-inicial-teste/aergergerg.PNG" 
+      class="header-img"
+      alt="Convite Pedro Dômini">
 
-    <section class="info reveal">
-        <h2>Propósito deste portal</h2>
-        <ul>
-            <li>Padronizar processos e boas práticas internas</li>
-            <li>Elevar a qualidade do atendimento ao cliente</li>
-            <li>Capacitar continuamente os colaboradores</li>
-            <li>Fortalecer a cultura e o crescimento profissional</li>
-        </ul>
-    </section>
+    <h2>🌿 Confirmação de Presença</h2>
 
-    <section class="aviso reveal">
-        🔔 <strong>Aviso Interno:</strong> Novos cursos de atendimento e suporte técnico
-        serão disponibilizados em breve neste portal.
-    </section>
+    <!-- NOME -->
+    <label>Qual é o seu nome?</label>
+    <input type="text" id="nome" placeholder="Digite seu nome completo">
 
-    <section class="buttons reveal">
+    <!-- QUANTIDADE DE PESSOAS -->
+    <label style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+        <span>Quantas pessoas contando com você irão?</span>
+        <select id="quantidade" style="width: 90px;">
+            <option value="">Qtd</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+    </label>
 
-        <a href="https://office-net-ofc.github.io/Pagina-de-treinamentos/Tutoriais-sistemas/Tutoriais-sistemas-index.html"
-           class="button">
-            Treinamentos do Sistema
-            <span>Processos internos, sistemas e rotinas operacionais</span>
-        </a>
+    <!-- PESSOAS -->
+    <label>
+        Digite o nome completo das pessoas que irão com você, conforme nº de senha(s) disponível(eis),
+        e, caso tenha criança, informar idade:
+    </label>
+    <textarea id="pessoas" rows="4"
+        placeholder="Ex: Maria Silva, João Silva (5 anos)"></textarea>
 
-        <a href="https://office-net-ofc.github.io/Pagina-de-treinamentos/Tutoriais-clientes/tutoriais-clientes-index.html"
-           class="button">
-            Tutoriais para Clientes
-            <span>Orientações sobre aplicativos e serviços Office Net</span>
-        </a>
+    <!-- CONFIRMAÇÃO -->
+    <label>Confirma presença?</label>
+    <select id="status">
+        <option value="Confirmado">✅ Sim, estaremos presentes</option>
+        <option value="Não poderá comparecer">❌ Não poderemos comparecer</option>
+    </select>
 
-        <a href="https://office-net-ofc.github.io/Pagina-de-treinamentos/Cursos-internos/Cursos-internos-index.html"
-           class="button button-premium">
-            Cursos Internos Office Net
-            <span>Desenvolvimento profissional e crescimento na empresa</span>
-        </a>
+    <button onclick="enviar()">Enviar confirmação 💚</button>
 
-    </section>
-
-</main>
-
-<footer>
-    © 2025 Office Net — Portal interno corporativo
-</footer>
+</div>
 
 <script>
-const reveals = document.querySelectorAll('.reveal');
+// CRIA FOLHAS CAINDO
+const folhasContainer = document.getElementById("folhas");
+const folhaImg = "https://mickaelfelipe2025.github.io/Teste-Office-Net/pagina-inicial-teste/Moldes_De_Folhas_Para_Imprimir_-_Dicas_Pr%C3%A1ticas__ABB-removebg-preview.png";
 
-window.addEventListener('scroll', () => {
-    reveals.forEach(el => {
-        const top = el.getBoundingClientRect().top;
-        if (top < window.innerHeight - 80) {
-            el.classList.add('active');
-        }
-    });
-});
+for (let i = 0; i < 20; i++) {
+    let folha = document.createElement("img");
+    folha.src = folhaImg;
+    folha.className = "folha";
+    folha.style.left = Math.random() * 100 + "vw";
+    folha.style.animationDuration = (8 + Math.random() * 6) + "s";
+    folha.style.animationDelay = Math.random() * 5 + "s";
+    folhasContainer.appendChild(folha);
+}
+
+// ENVIO WHATSAPP
+function enviar() {
+    let nome = document.getElementById("nome").value;
+    let quantidade = document.getElementById("quantidade").value;
+    let pessoas = document.getElementById("pessoas").value;
+    let status = document.getElementById("status").value;
+
+    if (nome === "") {
+        alert("Por favor, informe seu nome 😊");
+        return;
+    }
+
+    if (quantidade === "") {
+        alert("Informe a quantidade de pessoas 😊");
+        return;
+    }
+
+    let mensagem =
+`🌿 *CONFIRMAÇÃO DE PRESENÇA* 🌿
+🎉 Aniversário de 1 ano do Pedro Dômini
+
+👤 Nome: ${nome}
+👥 Quantidade de pessoas: ${quantidade}
+👨‍👩‍👧 Pessoas que irão: ${pessoas}
+📌 Status: ${status}`;
+
+    let telefone = "559885699508";
+    let url = "https://wa.me/" + telefone + "?text=" + encodeURIComponent(mensagem);
+
+    window.open(url, "_blank");
+}
 </script>
 
 </body>
