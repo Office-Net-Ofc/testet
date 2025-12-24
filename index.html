@@ -92,26 +92,25 @@ button:hover {
     background-color: #256428;
 }
 
-/* LOADING */
+/* ✅ LOADING CORRIGIDO */
 #loading {
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(255,255,255,0.96);
-    z-index:9999;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:20px;
+    display: none; /* começa oculto */
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.96);
+    z-index: 9999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- TELA DE LOADING -->
+<!-- LOADING -->
 <div id="loading">
     <h2 id="loadingTitle">⏳ Aguarde um momento</h2>
     <p id="loadingText">Estamos registrando seus dados 💚</p>
@@ -140,9 +139,7 @@ button:hover {
     <option>10</option>
 </select>
 
-<label>
-Digite o nome completo das pessoas que irão com você, e se tiver criança informe a idade:
-</label>
+<label>Digite o nome das pessoas que irão com você:</label>
 <textarea id="pessoas" rows="4"
 placeholder="Ex: Maria Silva, João Silva (5 anos)"></textarea>
 
@@ -157,7 +154,16 @@ placeholder="Ex: Maria Silva, João Silva (5 anos)"></textarea>
 </div>
 
 <script>
-// ANIMAÇÃO DAS FOLHAS
+// ELEMENTOS
+const nomeEl = document.getElementById("nome");
+const quantidadeEl = document.getElementById("quantidade");
+const pessoasEl = document.getElementById("pessoas");
+const statusEl = document.getElementById("status");
+const loading = document.getElementById("loading");
+const loadingTitle = document.getElementById("loadingTitle");
+const loadingText = document.getElementById("loadingText");
+
+// FOLHAS
 const folhasContainer = document.getElementById("folhas");
 const folhaImg =
 "https://office-net-ofc.github.io/confirmacao-de-presenca/imagens/Moldes_De_Folhas_Para_Imprimir_-_Dicas_Pr%C3%A1ticas__ABB-removebg-preview.png";
@@ -174,12 +180,7 @@ for (let i = 0; i < 20; i++) {
 
 // FUNÇÃO ENVIAR
 function enviar() {
-    const nome = nomeEl.value.trim();
-    const quantidade = quantidadeEl.value;
-    const pessoas = pessoasEl.value.trim();
-    const status = statusEl.value;
-
-    if (!nome || !quantidade) {
+    if (!nomeEl.value || !quantidadeEl.value) {
         alert("Preencha nome e quantidade 😊");
         return;
     }
@@ -190,29 +191,21 @@ function enviar() {
 `🌿 *CONFIRMAÇÃO DE PRESENÇA* 🌿
 🎉 Aniversário de 1 ano do Pedro Dômini
 
-👤 Nome: ${nome}
-👥 Quantidade: ${quantidade}
-👨‍👩‍👧 Pessoas: ${pessoas || "Não informado"}
-📌 Status: ${status}`;
+👤 Nome: ${nomeEl.value}
+👥 Quantidade: ${quantidadeEl.value}
+👨‍👩‍👧 Pessoas: ${pessoasEl.value || "Não informado"}
+📌 Status: ${statusEl.value}`;
 
-    const whatsappURL =
-        "https://wa.me/559889117646?text=" + encodeURIComponent(mensagem);
-
-    const w = window.open(whatsappURL, "_blank");
-
-    setTimeout(() => {
-        if (!w || w.closed) {
-            loadingTitle.innerText = "⚠️ Atenção";
-            loadingText.innerHTML =
-            "Não foi possível abrir o WhatsApp automaticamente.<br>Verifique se ele está instalado.";
-        }
-    }, 1500);
+    window.open(
+        "https://wa.me/559889117646?text=" + encodeURIComponent(mensagem),
+        "_blank"
+    );
 
     const formData = new FormData();
-    formData.append("nome", nome);
-    formData.append("quantidade", quantidade);
-    formData.append("pessoas", pessoas);
-    formData.append("status", status);
+    formData.append("nome", nomeEl.value);
+    formData.append("quantidade", quantidadeEl.value);
+    formData.append("pessoas", pessoasEl.value);
+    formData.append("status", statusEl.value);
 
     fetch("https://script.google.com/macros/s/AKfycbzRs0QZmqUi_LBtXDqIJudUa-mktvTFO94JALnd9spFzFXpqz2D3Z0JN-hq5jnDpran/exec", {
         method: "POST",
@@ -228,15 +221,6 @@ function enviar() {
         loadingText.innerText = "Erro ao salvar dados. Avise o anfitrião.";
     });
 }
-
-// atalhos
-const nomeEl = document.getElementById("nome");
-const quantidadeEl = document.getElementById("quantidade");
-const pessoasEl = document.getElementById("pessoas");
-const statusEl = document.getElementById("status");
-const loading = document.getElementById("loading");
-const loadingTitle = document.getElementById("loadingTitle");
-const loadingText = document.getElementById("loadingText");
 </script>
 
 </body>
