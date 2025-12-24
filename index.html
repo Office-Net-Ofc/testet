@@ -92,6 +92,7 @@ button:hover {
     background-color: #256428;
 }
 
+/* LOADING */
 #loading {
     display: none;
     position: fixed;
@@ -109,6 +110,7 @@ button:hover {
 
 <body>
 
+<!-- LOADING -->
 <div id="loading">
     <h2 id="loadingTitle">⏳ Aguarde</h2>
     <p id="loadingText">Estamos registrando seus dados 💚</p>
@@ -118,9 +120,10 @@ button:hover {
 
 <div class="container">
 
-<img src="https://office-net-ofc.github.io/confirmacao-de-presenca/imagens/aergergerg.PNG"
-     class="header-img"
-     alt="Convite Pedro Dômini">
+<img
+  src="https://office-net-ofc.github.io/confirmacao-de-presenca/imagens/aergergerg.PNG"
+  class="header-img"
+  alt="Convite Pedro Dômini">
 
 <h2>🌿 Confirmação de Presença</h2>
 
@@ -160,7 +163,7 @@ const loading = document.getElementById("loading");
 const loadingTitle = document.getElementById("loadingTitle");
 const loadingText = document.getElementById("loadingText");
 
-// FOLHAS
+// FOLHAS ANIMADAS
 const folhasContainer = document.getElementById("folhas");
 const folhaImg =
 "https://office-net-ofc.github.io/confirmacao-de-presenca/imagens/Moldes_De_Folhas_Para_Imprimir_-_Dicas_Pr%C3%A1ticas__ABB-removebg-preview.png";
@@ -192,13 +195,14 @@ function enviar() {
     formData.append("pessoas", pessoasEl.value);
     formData.append("status", statusEl.value);
 
-    fetch("https://script.google.com/macros/s/AKfycby9amkUuWw5OHxnxYNrcH_TLAaISsdcVQ_JwKxjkm15lzn5Hv1Cyjllyg8NcQl_cJu4/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbww_YbB_cwj4VSDiK6EIqsp0dSEfp-unUaG6EIXls-znKxZ3rO2nAiSIsTUZLqfQ-HI/exec", {
         method: "POST",
         body: formData
     })
-    .then(res => res.text())
+    .then(res => res.json())
     .then(resp => {
-        if (resp === "OK") {
+
+        if (resp.status === "OK") {
             loadingTitle.innerText = "✅ Confirmação enviada!";
             loadingText.innerText =
               "Os dados foram registrados e o organizador foi avisado por e-mail 💚";
@@ -206,11 +210,24 @@ function enviar() {
             setTimeout(() => {
                 loading.style.display = "none";
             }, 4000);
+
+            // Limpa formulário
+            nomeEl.value = "";
+            quantidadeEl.value = "";
+            pessoasEl.value = "";
+            statusEl.value = "Confirmado";
+
+        } else if (resp.status === "ERRO") {
+            loadingTitle.innerText = "❌ Erro";
+            loadingText.innerText =
+              resp.mensagem || "Erro ao registrar confirmação.";
+
         } else {
-            throw new Error("Erro");
+            throw new Error("Resposta inesperada");
         }
     })
-    .catch(() => {
+    .catch(err => {
+        console.error(err);
         loadingTitle.innerText = "❌ Erro";
         loadingText.innerText =
           "Não foi possível registrar sua confirmação. Tente novamente.";
