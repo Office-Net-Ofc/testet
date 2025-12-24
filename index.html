@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <title>Confirmação de Presença - Pedro Dômini</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
@@ -190,18 +192,18 @@ function enviar() {
     loadingText.innerText = "Estamos registrando seus dados 💚";
 
     const formData = new FormData();
-    formData.append("nome", nomeEl.value);
+    formData.append("nome", nomeEl.value.trim());
     formData.append("quantidade", quantidadeEl.value);
-    formData.append("pessoas", pessoasEl.value);
+    formData.append("pessoas", pessoasEl.value.trim());
     formData.append("status", statusEl.value);
 
-    fetch("https://script.google.com/macros/s/AKfycbww_YbB_cwj4VSDiK6EIqsp0dSEfp-unUaG6EIXls-znKxZ3rO2nAiSIsTUZLqfQ-HI/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbxGkBgGHqucV_OCtshlDxJz_EFqNH249wb7S-6Olm8saEsPWFUOrDLfmFNUh-JIvAaH/exec", {
         method: "POST",
-        body: formData
+        body: formData,
+        cache: "no-store"
     })
     .then(res => res.json())
     .then(resp => {
-
         if (resp.status === "OK") {
             loadingTitle.innerText = "✅ Confirmação enviada!";
             loadingText.innerText =
@@ -211,19 +213,13 @@ function enviar() {
                 loading.style.display = "none";
             }, 4000);
 
-            // Limpa formulário
             nomeEl.value = "";
             quantidadeEl.value = "";
             pessoasEl.value = "";
             statusEl.value = "Confirmado";
 
-        } else if (resp.status === "ERRO") {
-            loadingTitle.innerText = "❌ Erro";
-            loadingText.innerText =
-              resp.mensagem || "Erro ao registrar confirmação.";
-
         } else {
-            throw new Error("Resposta inesperada");
+            throw new Error(resp.mensagem || "Erro desconhecido");
         }
     })
     .catch(err => {
