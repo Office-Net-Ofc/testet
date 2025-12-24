@@ -92,9 +92,8 @@ button:hover {
     background-color: #256428;
 }
 
-/* ✅ LOADING CORRIGIDO */
 #loading {
-    display: none; /* começa oculto */
+    display: none;
     position: fixed;
     inset: 0;
     background: rgba(255,255,255,0.96);
@@ -110,9 +109,8 @@ button:hover {
 
 <body>
 
-<!-- LOADING -->
 <div id="loading">
-    <h2 id="loadingTitle">⏳ Aguarde um momento</h2>
+    <h2 id="loadingTitle">⏳ Aguarde</h2>
     <p id="loadingText">Estamos registrando seus dados 💚</p>
 </div>
 
@@ -120,10 +118,9 @@ button:hover {
 
 <div class="container">
 
-<img
-  src="https://office-net-ofc.github.io/confirmacao-de-presenca/imagens/aergergerg.PNG"
-  class="header-img"
-  alt="Convite Pedro Dômini">
+<img src="https://office-net-ofc.github.io/confirmacao-de-presenca/imagens/aergergerg.PNG"
+     class="header-img"
+     alt="Convite Pedro Dômini">
 
 <h2>🌿 Confirmação de Presença</h2>
 
@@ -178,7 +175,7 @@ for (let i = 0; i < 20; i++) {
     folhasContainer.appendChild(folha);
 }
 
-// FUNÇÃO ENVIAR
+// ENVIO
 function enviar() {
     if (!nomeEl.value || !quantidadeEl.value) {
         alert("Preencha nome e quantidade 😊");
@@ -186,20 +183,8 @@ function enviar() {
     }
 
     loading.style.display = "flex";
-
-    const mensagem =
-`🌿 *CONFIRMAÇÃO DE PRESENÇA* 🌿
-🎉 Aniversário de 1 ano do Pedro Dômini
-
-👤 Nome: ${nomeEl.value}
-👥 Quantidade: ${quantidadeEl.value}
-👨‍👩‍👧 Pessoas: ${pessoasEl.value || "Não informado"}
-📌 Status: ${statusEl.value}`;
-
-    window.open(
-        "https://wa.me/559889117646?text=" + encodeURIComponent(mensagem),
-        "_blank"
-    );
+    loadingTitle.innerText = "⏳ Aguarde";
+    loadingText.innerText = "Estamos registrando seus dados 💚";
 
     const formData = new FormData();
     formData.append("nome", nomeEl.value);
@@ -207,18 +192,28 @@ function enviar() {
     formData.append("pessoas", pessoasEl.value);
     formData.append("status", statusEl.value);
 
-    fetch("https://script.google.com/macros/s/AKfycbzRs0QZmqUi_LBtXDqIJudUa-mktvTFO94JALnd9spFzFXpqz2D3Z0JN-hq5jnDpran/exec", {
+    fetch("https://script.google.com/macros/s/AKfycby9amkUuWw5OHxnxYNrcH_TLAaISsdcVQ_JwKxjkm15lzn5Hv1Cyjllyg8NcQl_cJu4/exec", {
         method: "POST",
         body: formData
     })
-    .then(() => {
-        loadingTitle.innerText = "✅ Tudo certo!";
-        loadingText.innerText = "Dados registrados com sucesso 💚";
-        setTimeout(() => loading.style.display = "none", 4000);
+    .then(res => res.text())
+    .then(resp => {
+        if (resp === "OK") {
+            loadingTitle.innerText = "✅ Confirmação enviada!";
+            loadingText.innerText =
+              "Os dados foram registrados e o organizador foi avisado por e-mail 💚";
+
+            setTimeout(() => {
+                loading.style.display = "none";
+            }, 4000);
+        } else {
+            throw new Error("Erro");
+        }
     })
     .catch(() => {
         loadingTitle.innerText = "❌ Erro";
-        loadingText.innerText = "Erro ao salvar dados. Avise o anfitrião.";
+        loadingText.innerText =
+          "Não foi possível registrar sua confirmação. Tente novamente.";
     });
 }
 </script>
