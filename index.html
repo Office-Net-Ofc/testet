@@ -2,9 +2,8 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Confirmação de Presença - Pedro Dômini</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body {
@@ -74,9 +73,7 @@ input, textarea, select {
     font-size: 15px;
 }
 
-textarea {
-    resize: vertical;
-}
+textarea { resize: vertical; }
 
 button {
     margin-top: 25px;
@@ -89,10 +86,8 @@ button {
     border-radius: 10px;
     cursor: pointer;
 }
-
-button:hover {
-    background-color: #256428;
-}
+button:hover { background-color: #256428; }
+button:disabled { opacity: .6; cursor: not-allowed; }
 
 /* LOADING */
 #loading {
@@ -107,6 +102,19 @@ button:hover {
     text-align: center;
     padding: 20px;
 }
+
+.notice {
+  margin-top: 14px;
+  background: #fff8e1;
+  border: 1px solid #ffe0a3;
+  color: #5d4037;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.35;
+  display: none;
+}
+.notice b { color: #3e2723; }
 </style>
 </head>
 
@@ -114,8 +122,8 @@ button:hover {
 
 <!-- LOADING -->
 <div id="loading">
-    <h2 id="loadingTitle">⏳ Aguarde</h2>
-    <p id="loadingText">Estamos registrando seus dados 💚</p>
+  <h2 id="loadingTitle">⏳ Aguarde um momento</h2>
+  <p id="loadingText">Estamos registrando seus dados 💚</p>
 </div>
 
 <div class="folhas" id="folhas"></div>
@@ -129,8 +137,13 @@ button:hover {
 
 <h2>🌿 Confirmação de Presença</h2>
 
+<div id="internalBrowserNotice" class="notice">
+  ⚠️ Você parece estar abrindo pelo <b>navegador do Instagram/Facebook</b>.
+  Se o WhatsApp não abrir, toque nos <b>3 pontinhos (⋮)</b> e escolha <b>“Abrir no navegador”</b> (Chrome/Safari).
+</div>
+
 <label>Qual é o seu nome?</label>
-<input type="text" id="nome" placeholder="Digite seu nome completo">
+<input type="text" id="nome" placeholder="Digite seu nome completo" autocomplete="name">
 
 <label>Quantas pessoas contando com você irão?</label>
 <select id="quantidade">
@@ -151,12 +164,20 @@ placeholder="Ex: Maria Silva, João Silva (5 anos)"></textarea>
     <option value="Não poderá comparecer">❌ Não poderemos comparecer</option>
 </select>
 
-<button onclick="enviar()">Enviar confirmação 💚</button>
+<button id="btnEnviar" type="button">Enviar confirmação 💚</button>
 
 </div>
 
 <script>
-// ELEMENTOS
+/** =========================
+ * CONFIG (JÁ AJUSTADO)
+ * ========================= */
+const WHATSAPP_PHONE = "559885699508";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJiVAymgiZuoWMaq1-U8ZD1n6m7cdF841LP8aYmB0LysRNbZfmbOPvKlnNftgiG30hfQ/exec";
+
+/** =========================
+ * ELEMENTOS
+ * ========================= */
 const nomeEl = document.getElementById("nome");
 const quantidadeEl = document.getElementById("quantidade");
 const pessoasEl = document.getElementById("pessoas");
@@ -164,8 +185,12 @@ const statusEl = document.getElementById("status");
 const loading = document.getElementById("loading");
 const loadingTitle = document.getElementById("loadingTitle");
 const loadingText = document.getElementById("loadingText");
+const btnEnviar = document.getElementById("btnEnviar");
+const noticeEl = document.getElementById("internalBrowserNotice");
 
-// FOLHAS ANIMADAS
+/** =========================
+ * FOLHAS
+ * ========================= */
 const folhasContainer = document.getElementById("folhas");
 const folhaImg =
 "https://office-net-ofc.github.io/confirmacao-de-presenca/imagens/Moldes_De_Folhas_Para_Imprimir_-_Dicas_Pr%C3%A1ticas__ABB-removebg-preview.png";
@@ -180,54 +205,121 @@ for (let i = 0; i < 20; i++) {
     folhasContainer.appendChild(folha);
 }
 
-// ENVIO
-function enviar() {
-    if (!nomeEl.value || !quantidadeEl.value) {
-        alert("Preencha nome e quantidade 😊");
-        return;
-    }
+/** =========================
+ * UTIL
+ * ========================= */
+function setLoading(isLoading, title, text) {
+  if (title) loadingTitle.innerText = title;
+  if (text) loadingText.innerText = text;
+  loading.style.display = isLoading ? "flex" : "none";
+  btnEnviar.disabled = isLoading;
+}
 
-    loading.style.display = "flex";
-    loadingTitle.innerText = "⏳ Aguarde";
-    loadingText.innerText = "Estamos registrando seus dados 💚";
+function isInternalBrowser() {
+  const ua = navigator.userAgent || "";
+  return /Instagram|FBAN|FBAV|FB_IAB|FB4A|FBIOS|Line|Twitter|TikTok|Pinterest|Snapchat/i.test(ua);
+}
 
-    const formData = new FormData();
-    formData.append("nome", nomeEl.value.trim());
-    formData.append("quantidade", quantidadeEl.value);
-    formData.append("pessoas", pessoasEl.value.trim());
-    formData.append("status", statusEl.value);
+function limparTexto(s) {
+  return (s || "").toString().replace(/\s+/g, " ").trim();
+}
 
-    fetch("https://script.google.com/macros/s/AKfycbxGkBgGHqucV_OCtshlDxJz_EFqNH249wb7S-6Olm8saEsPWFUOrDLfmFNUh-JIvAaH/exec", {
-        method: "POST",
-        body: formData,
-        cache: "no-store"
-    })
-    .then(res => res.json())
-    .then(resp => {
-        if (resp.status === "OK") {
-            loadingTitle.innerText = "✅ Confirmação enviada!";
-            loadingText.innerText =
-              "Os dados foram registrados e o organizador foi avisado por e-mail 💚";
+function montarMensagemWhatsApp({ nome, quantidade, pessoas, status }) {
+  const pessoasTxt = pessoas ? pessoas : "Não informado";
+  return `🌿 *CONFIRMAÇÃO DE PRESENÇA* 🌿
+🎉 Aniversário de 1 ano do Pedro Dômini
 
-            setTimeout(() => {
-                loading.style.display = "none";
-            }, 4000);
+👤 *Nome:* ${nome}
+👥 *Quantidade:* ${quantidade}
+👨‍👩‍👧 *Pessoas:* ${pessoasTxt}
+📌 *Status:* ${status}`;
+}
 
-            nomeEl.value = "";
-            quantidadeEl.value = "";
-            pessoasEl.value = "";
-            statusEl.value = "Confirmado";
+function abrirWhatsAppComFallback(mensagem) {
+  const text = encodeURIComponent(mensagem);
+  const deepLink = `whatsapp://send?phone=${WHATSAPP_PHONE}&text=${text}`;
+  const universalLink = `https://wa.me/${WHATSAPP_PHONE}?text=${text}`;
 
-        } else {
-            throw new Error(resp.mensagem || "Erro desconhecido");
-        }
-    })
-    .catch(err => {
-        console.error(err);
-        loadingTitle.innerText = "❌ Erro";
-        loadingText.innerText =
-          "Não foi possível registrar sua confirmação. Tente novamente.";
-    });
+  // tenta abrir app
+  window.location.href = deepLink;
+
+  // se não abrir, cai no universal
+  setTimeout(() => {
+    window.location.href = universalLink;
+  }, 900);
+}
+
+async function salvarNoSheets({ nome, quantidade, pessoas, status }) {
+  const formData = new FormData();
+  formData.append("nome", nome);
+  formData.append("quantidade", quantidade);
+  formData.append("pessoas", pessoas);
+  formData.append("status", status);
+  formData.append("origem", "github-pages");
+
+  const resp = await fetch(GOOGLE_SCRIPT_URL, {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await resp.json().catch(() => null);
+
+  if (!data || !data.ok) {
+    const msg = (data && data.error) ? data.error : "Falha ao salvar na planilha.";
+    throw new Error(msg);
+  }
+  return true;
+}
+
+/** =========================
+ * AÇÃO
+ * ========================= */
+async function enviar() {
+  const nome = limparTexto(nomeEl.value);
+  const quantidade = limparTexto(quantidadeEl.value);
+  const pessoas = limparTexto(pessoasEl.value);
+  const status = limparTexto(statusEl.value);
+
+  if (!nome || nome.length < 3) {
+    alert("Digite seu nome completo 😊");
+    nomeEl.focus();
+    return;
+  }
+  if (!quantidade) {
+    alert("Selecione a quantidade de pessoas 😊");
+    quantidadeEl.focus();
+    return;
+  }
+
+  setLoading(true, "⏳ Aguarde um momento", "Estamos registrando seus dados 💚");
+
+  try {
+    await salvarNoSheets({ nome, quantidade, pessoas, status });
+
+    setLoading(true, "✅ Tudo certo!", "Abrindo o WhatsApp com a mensagem pronta 💚");
+
+    const mensagem = montarMensagemWhatsApp({ nome, quantidade, pessoas, status });
+    abrirWhatsAppComFallback(mensagem);
+
+    setTimeout(() => setLoading(false), 3500);
+
+  } catch (err) {
+    console.error(err);
+    setLoading(true, "❌ Erro", "Não conseguimos salvar seus dados. Tente novamente.");
+    setTimeout(() => {
+      setLoading(false);
+      alert("Erro ao salvar na planilha: " + (err.message || "tente novamente."));
+    }, 1200);
+  }
+}
+
+/** =========================
+ * INIT
+ * ========================= */
+btnEnviar.addEventListener("click", enviar);
+
+if (isInternalBrowser()) {
+  noticeEl.style.display = "block";
 }
 </script>
 
