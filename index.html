@@ -105,7 +105,7 @@ button:hover {
 <div class="container">
 
 <img 
-  src="https://mickaelfelipe2025.github.io/Teste-Office-Net/pagina-inicial-teste/aergergerg.PNG" 
+  src="https://office-net-ofc.github.io/confirmacao-de-presenca/imagens/aergergerg.PNG" 
   class="header-img"
   alt="Convite Pedro Dômini">
 
@@ -148,9 +148,9 @@ placeholder="Ex: Maria Silva, João Silva (5 anos)"></textarea>
 </div>
 
 <script>
-// folhas
+// folhas animadas
 const folhasContainer = document.getElementById("folhas");
-const folhaImg = "https://mickaelfelipe2025.github.io/Teste-Office-Net/pagina-inicial-teste/Moldes_De_Folhas_Para_Imprimir_-_Dicas_Pr%C3%A1ticas__ABB-removebg-preview.png";
+const folhaImg = "https://office-net-ofc.github.io/confirmacao-de-presenca/imagens/Moldes_De_Folhas_Para_Imprimir_-_Dicas_Pr%C3%A1ticas__ABB-removebg-preview.png";
 
 for (let i = 0; i < 20; i++) {
     let folha = document.createElement("img");
@@ -163,35 +163,41 @@ for (let i = 0; i < 20; i++) {
 }
 
 // ENVIO
-function enviar() {
-    let nome = document.getElementById("nome").value;
+async function enviar() {
+    let nome = document.getElementById("nome").value.trim();
     let quantidade = document.getElementById("quantidade").value;
-    let pessoas = document.getElementById("pessoas").value;
+    let pessoas = document.getElementById("pessoas").value.trim();
     let status = document.getElementById("status").value;
 
-    if (nome === "") {
+    if (!nome) {
         alert("Informe seu nome 😊");
         return;
     }
 
-    if (quantidade === "") {
+    if (!quantidade) {
         alert("Informe a quantidade de pessoas 😊");
         return;
     }
 
     const scriptURL = "https://script.google.com/macros/s/AKfycbwf7Q4XEmrjBY3YmAe1yOZyHXNQY8_sCRzoRJLzXco1HLDp2VQ14bmY2zf2N5SggVie/exec";
 
-    fetch(scriptURL, {
-        method: "POST",
-        body: JSON.stringify({
-            nome: nome,
-            quantidade: quantidade,
-            pessoas: pessoas,
-            status: status
-        })
-    }).catch(() => {
-        alert("Erro ao enviar para a planilha");
-    });
+    try {
+        await fetch(scriptURL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                nome,
+                quantidade,
+                pessoas,
+                status
+            })
+        });
+    } catch (e) {
+        alert("Erro ao enviar para a planilha 😢");
+        return;
+    }
 
     let mensagem =
 `🌿 *CONFIRMAÇÃO DE PRESENÇA* 🌿
@@ -199,11 +205,17 @@ function enviar() {
 
 👤 Nome: ${nome}
 👥 Quantidade de pessoas: ${quantidade}
-👨‍👩‍👧 Pessoas: ${pessoas}
+👨‍👩‍👧 Pessoas: ${pessoas || "Não informado"}
 📌 Status: ${status}`;
 
-    let telefone = "559885699508";
-    window.open("https://wa.me/" + telefone + "?text=" + encodeURIComponent(mensagem), "_blank");
+    let telefone = "559889117646";
+
+    // LINK CORRIGIDO (não dá erro de WhatsApp Business)
+    window.location.href =
+        "https://api.whatsapp.com/send?phone=" +
+        telefone +
+        "&text=" +
+        encodeURIComponent(mensagem);
 }
 </script>
 
