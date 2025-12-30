@@ -1,117 +1,304 @@
-/**********************
- * PLANILHA / ABA
- **********************/
-const SPREADSHEET_ID = "1w6gDFhG1Ctqc0jcRSXNVKGyQLM1Gon8rBhfzb5mvxYE";
-const SHEET_NAME = "Respostas";
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Confirmação de Presença - Pedro Dômini</title>
 
-/**********************
- * WHATSAPP CLOUD API
- **********************/
-const WA_TOKEN = "COLE_AQUI_O_TOKEN_PERMANENTE"; // <-- cole no Apps Script (NUNCA no HTML)
-const PHONE_NUMBER_ID = "874577072414510";
-
-// Template aprovado
-const TEMPLATE_NAME = "confirmacao_presenca_evento";
-const TEMPLATE_LANG = "pt_BR";
-
-// Números da organização (recebem a confirmação)
-const ORG_WHATSAPPS = [
-  "5598981876585",
-  "5598985699508"
-];
-
-/**********************
- * WEB APP
- **********************/
-function doPost(e) {
-  try {
-    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-    const sheet = ss.getSheetByName(SHEET_NAME);
-    if (!sheet) return jsonResponse({ ok: false, error: `Aba "${SHEET_NAME}" não encontrada.` });
-
-    const p = (e && e.parameter) ? e.parameter : {};
-
-    const nome = String(p.nome || "").trim();
-    const quantidade = String(p.quantidade || "").trim();
-    const pessoas = String(p.pessoas || "").trim();
-    const status = String(p.status || "Confirmado").trim();
-    const origem = String(p.origem || "site").trim();
-
-    if (!nome || !quantidade) {
-      return jsonResponse({ ok: false, error: "Nome e quantidade são obrigatórios." });
-    }
-
-    // 1) Grava na planilha (mesmo formato do seu código antigo + origem)
-    sheet.appendRow([new Date(), nome, quantidade, pessoas, status, origem]);
-
-    // 2) Envia template para os 2 números
-    const waResults = [];
-    for (const numero of ORG_WHATSAPPS) {
-      const resp = enviarTemplateWhatsApp({
-        to: numero,
-        nome,
-        quantidade,
-        pessoas,
-        status
-      });
-      waResults.push({ numero, ok: true, resp });
-    }
-
-    return jsonResponse({ ok: true, wa: waResults });
-
-  } catch (err) {
-    return jsonResponse({ ok: false, error: String(err && err.message ? err.message : err) });
+<style>
+  :root{
+    --verde:#2f7d32;
+    --verde2:#256428;
+    --bg:#f7f2e8;
+    --texto:#4e342e;
   }
-}
 
-function doGet() {
-  return jsonResponse({ ok: true, message: "WebApp online ✅" });
-}
+  body{
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+  }
 
-function enviarTemplateWhatsApp({ to, nome, quantidade, pessoas, status }) {
-  const url = `https://graph.facebook.com/v22.0/${PHONE_NUMBER_ID}/messages`;
+  /* Folhas caindo */
+  .folhas{
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
 
-  const payload = {
-    messaging_product: "whatsapp",
-    to,
-    type: "template",
-    template: {
-      name: TEMPLATE_NAME,
-      language: { code: TEMPLATE_LANG },
-      components: [
-        {
-          type: "body",
-          parameters: [
-            { type: "text", text: nome || "-" },
-            { type: "text", text: quantidade || "-" },
-            { type: "text", text: pessoas || "-" },
-            { type: "text", text: status || "-" }
-          ]
+  .folha{
+    position: absolute;
+    top: -80px;
+    opacity: .75;
+    will-change: transform;
+    animation-name: cair;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,.12));
+  }
+
+  @keyframes cair{
+    0%   { transform: translate3d(var(--x,0), -80px, 0) rotate(0deg); }
+    100% { transform: translate3d(var(--x,0), 110vh, 0) rotate(360deg); }
+  }
+
+  .container{
+    position: relative;
+    z-index: 2;
+    background: #fff;
+    padding: 30px;
+    border-radius: 18px;
+    max-width: 440px;
+    margin: 40px auto;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    border: 4px solid var(--verde);
+  }
+
+  .header-img{
+    width: 100%;
+    max-width: 340px;
+    display: block;
+    margin: 0 auto 20px;
+  }
+
+  h2{ text-align:center; color: var(--verde); margin: 0 0 10px; }
+
+  label{
+    font-weight: 600;
+    margin-top: 18px;
+    display: block;
+    color: var(--texto);
+  }
+
+  input, textarea, select{
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: 1px solid #cfcfcf;
+    font-size: 15px;
+    box-sizing: border-box;
+  }
+
+  textarea{ resize: vertical; min-height: 88px; }
+
+  button{
+    margin-top: 25px;
+    width: 100%;
+    padding: 15px;
+    background-color: var(--verde);
+    color: #fff;
+    font-size: 17px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  button:hover{ background-color: var(--verde2); }
+  button:disabled{ opacity: .6; cursor: not-allowed; }
+
+  /* LOADING */
+  #loading{
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.96);
+    z-index: 9999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+  }
+
+  /* Mensagem de retorno */
+  #result{
+    display: none;
+    margin-top: 14px;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+  #result.ok{
+    background:#e8f5e9;
+    color:#1b5e20;
+    border:1px solid #c8e6c9;
+  }
+  #result.err{
+    background:#ffebee;
+    color:#b71c1c;
+    border:1px solid #ffcdd2;
+  }
+</style>
+</head>
+
+<body>
+
+<div id="loading">
+  <h2>⏳ Aguarde</h2>
+  <p>Enviando sua confirmação 💚</p>
+</div>
+
+<div class="folhas" id="folhas" aria-hidden="true"></div>
+
+<div class="container">
+  <img
+    src="https://office-net-ofc.github.io/confirmacao-de-presenca/imagens/aergergerg.PNG"
+    class="header-img"
+    alt="Convite"
+  />
+
+  <h2>🌿 Confirmação de Presença</h2>
+
+  <label for="nome">Qual é o seu nome?</label>
+  <input type="text" id="nome" placeholder="Digite seu nome completo" autocomplete="name" />
+
+  <label for="quantidade">Quantas pessoas contando com você irão?</label>
+  <select id="quantidade">
+    <option value="">Qtd</option>
+    <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+    <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+  </select>
+
+  <label for="pessoas">Quem irá com você?
+  informe o nome completo dos seus acompanhates e idade em caso de crianças.</label>
+  <textarea id="pessoas" placeholder="Ex: Maria Silva, João Silva (5 anos)"></textarea>
+
+  <label for="status">Confirma presença?</label>
+  <select id="status">
+    <option value="Confirmado">✅ Sim</option>
+    <option value="Não poderá comparecer">❌ Não</option>
+  </select>
+
+  <button id="btnEnviar" type="button">Enviar confirmação 💚</button>
+
+  <div id="result"></div>
+</div>
+
+<script>
+  // ====== CONFIG (folhas) ======
+  const LEAF_IMG = "https://office-net-ofc.github.io/confirmacao-de-presenca/imagens/Moldes_De_Folhas_Para_Imprimir_-_Dicas_Pr%C3%A1ticas__ABB-removebg-preview.png";
+
+  // ====== ELEMENTOS ======
+  const nome = document.getElementById("nome");
+  const quantidade = document.getElementById("quantidade");
+  const pessoas = document.getElementById("pessoas");
+  const status = document.getElementById("status");
+  const btnEnviar = document.getElementById("btnEnviar");
+
+  const loading = document.getElementById("loading");
+  const result = document.getElementById("result");
+
+  function showResult(ok, text) {
+    result.className = ok ? "ok" : "err";
+    result.textContent = text;
+    result.style.display = "block";
+  }
+
+  // ====== FOLHAS CAINDO (em volta do formulário) ======
+  function gerarLeftEmVoltaDoCentro() {
+    let left = Math.random() * 100;
+    if (left > 30 && left < 70) {
+      left = (Math.random() < 0.5)
+        ? (Math.random() * 22)
+        : (78 + Math.random() * 22);
+    }
+    return left;
+  }
+
+  function criarFolhas(qtd = 34) {
+    const wrap = document.getElementById("folhas");
+    wrap.innerHTML = "";
+
+    for (let i = 0; i < qtd; i++) {
+      const img = document.createElement("img");
+      img.src = LEAF_IMG;
+      img.className = "folha";
+      img.alt = "";
+      img.decoding = "async";
+      img.loading = "eager";
+
+      const size = 18 + Math.random() * 34; // 18..52
+      img.style.width = size + "px";
+      img.style.left = gerarLeftEmVoltaDoCentro() + "%";
+
+      const drift = (Math.random() * 140 - 70).toFixed(0) + "px";
+      img.style.setProperty("--x", drift);
+
+      const duration = 6 + Math.random() * 10; // 6..16
+      const delay = -(Math.random() * duration);
+      img.style.animationDuration = duration + "s";
+      img.style.animationDelay = delay + "s";
+
+      img.style.transform = `translateY(-80px) rotate(${Math.random() * 360}deg)`;
+      wrap.appendChild(img);
+    }
+  }
+
+  criarFolhas(34);
+  window.addEventListener("resize", () => criarFolhas(34));
+
+  // ====== ENVIO (SEM REDIRECIONAR) ======
+  btnEnviar.addEventListener("click", () => {
+    const n = (nome.value || "").trim();
+    const q = (quantidade.value || "").trim();
+    const p = (pessoas.value || "").trim();
+    const s = (status.value || "").trim();
+
+    if (!n || !q) {
+      alert("Preencha nome e quantidade.");
+      return;
+    }
+
+    result.style.display = "none";
+    btnEnviar.disabled = true;
+    loading.style.display = "flex";
+
+    const payload = {
+      nome: n,
+      quantidade: q,
+      pessoas: p,
+      status: s,
+      origem: "webapp"
+    };
+
+    // Chama o Apps Script no backend (sem CORS, sem fetch, sem URL)
+    google.script.run
+      .withSuccessHandler((resp) => {
+        loading.style.display = "none";
+        btnEnviar.disabled = false;
+
+        if (!resp || !resp.ok) {
+          const msg = resp?.error || "Falha ao registrar/enviar.";
+          showResult(false, msg);
+
+          // Loga detalhes de erro do WhatsApp no console (pra debugar rápido)
+          console.log("Detalhes WA:", resp?.wa || null);
+          return;
         }
-      ]
-    }
-  };
 
-  const res = UrlFetchApp.fetch(url, {
-    method: "post",
-    contentType: "application/json",
-    headers: { Authorization: `Bearer ${WA_TOKEN}` },
-    payload: JSON.stringify(payload),
-    muteHttpExceptions: true
+        showResult(true, "Confirmação registrada e enviada ✅");
+        console.log("WA OK:", resp.wa);
+
+        // Opcional: limpar campos após sucesso
+        // nome.value = "";
+        // quantidade.value = "";
+        // pessoas.value = "";
+        // status.value = "Confirmado";
+      })
+      .withFailureHandler((err) => {
+        loading.style.display = "none";
+        btnEnviar.disabled = false;
+        showResult(false, "Erro interno no servidor. Veja os logs do Apps Script.");
+        console.error(err);
+      })
+      .confirmarPresenca(payload);
   });
+</script>
 
-  const code = res.getResponseCode();
-  const body = res.getContentText();
-
-  if (code < 200 || code >= 300) {
-    throw new Error(`Erro WhatsApp API (${code}): ${body}`);
-  }
-
-  return JSON.parse(body);
-}
-
-function jsonResponse(obj) {
-  return ContentService
-    .createTextOutput(JSON.stringify(obj))
-    .setMimeType(ContentService.MimeType.JSON);
-}
+</body>
+</html>
