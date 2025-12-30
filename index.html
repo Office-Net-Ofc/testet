@@ -21,31 +21,6 @@
     overflow-x: hidden;
   }
 
-  /* Folhas caindo */
-  .folhas{
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-    overflow: hidden;
-  }
-
-  .folha{
-    position: absolute;
-    top: -80px;
-    opacity: .75;
-    will-change: transform;
-    animation-name: cair;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,.12));
-  }
-
-  @keyframes cair{
-    0%   { transform: translate3d(var(--x,0), -80px, 0) rotate(0deg); }
-    100% { transform: translate3d(var(--x,0), 110vh, 0) rotate(360deg); }
-  }
-
   .container{
     position: relative;
     z-index: 2;
@@ -100,7 +75,6 @@
   button:hover{ background-color: var(--verde2); }
   button:disabled{ opacity: .6; cursor: not-allowed; }
 
-  /* LOADING */
   #loading{
     display: none;
     position: fixed;
@@ -114,7 +88,6 @@
     padding: 20px;
   }
 
-  /* Mensagem de retorno */
   #result{
     display: none;
     margin-top: 14px;
@@ -122,6 +95,7 @@
     border-radius: 10px;
     font-weight: 600;
     line-height: 1.35;
+    word-break: break-word;
   }
   #result.ok{
     background:#e8f5e9;
@@ -142,8 +116,6 @@
   <h2>⏳ Aguarde</h2>
   <p>Enviando sua confirmação 💚</p>
 </div>
-
-<div class="folhas" id="folhas" aria-hidden="true"></div>
 
 <div class="container">
   <img
@@ -180,16 +152,11 @@
 </div>
 
 <script>
-  // ====== CONFIG (folhas) ======
-  const LEAF_IMG = "https://office-net-ofc.github.io/confirmacao-de-presenca/imagens/Moldes_De_Folhas_Para_Imprimir_-_Dicas_Pr%C3%A1ticas__ABB-removebg-preview.png";
-
-  // ====== ELEMENTOS ======
   const nome = document.getElementById("nome");
   const quantidade = document.getElementById("quantidade");
   const pessoas = document.getElementById("pessoas");
   const status = document.getElementById("status");
   const btnEnviar = document.getElementById("btnEnviar");
-
   const loading = document.getElementById("loading");
   const result = document.getElementById("result");
 
@@ -199,50 +166,11 @@
     result.style.display = "block";
   }
 
-  // ====== FOLHAS CAINDO (em volta do formulário) ======
-  function gerarLeftEmVoltaDoCentro() {
-    let left = Math.random() * 100;
-    if (left > 30 && left < 70) {
-      left = (Math.random() < 0.5)
-        ? (Math.random() * 22)
-        : (78 + Math.random() * 22);
-    }
-    return left;
+  function setBusy(isBusy) {
+    btnEnviar.disabled = isBusy;
+    loading.style.display = isBusy ? "flex" : "none";
   }
 
-  function criarFolhas(qtd = 34) {
-    const wrap = document.getElementById("folhas");
-    wrap.innerHTML = "";
-
-    for (let i = 0; i < qtd; i++) {
-      const img = document.createElement("img");
-      img.src = LEAF_IMG;
-      img.className = "folha";
-      img.alt = "";
-      img.decoding = "async";
-      img.loading = "eager";
-
-      const size = 18 + Math.random() * 34; // 18..52
-      img.style.width = size + "px";
-      img.style.left = gerarLeftEmVoltaDoCentro() + "%";
-
-      const drift = (Math.random() * 140 - 70).toFixed(0) + "px";
-      img.style.setProperty("--x", drift);
-
-      const duration = 6 + Math.random() * 10; // 6..16
-      const delay = -(Math.random() * duration);
-      img.style.animationDuration = duration + "s";
-      img.style.animationDelay = delay + "s";
-
-      img.style.transform = `translateY(-80px) rotate(${Math.random() * 360}deg)`;
-      wrap.appendChild(img);
-    }
-  }
-
-  criarFolhas(34);
-  window.addEventListener("resize", () => criarFolhas(34));
-
-  // ====== ENVIO (SEM REDIRECIONAR) ======
   btnEnviar.addEventListener("click", () => {
     const n = (nome.value || "").trim();
     const q = (quantidade.value || "").trim();
@@ -255,48 +183,54 @@
     }
 
     result.style.display = "none";
-    btnEnviar.disabled = true;
-    loading.style.display = "flex";
+    setBusy(true);
 
-    const payload = {
-      nome: n,
-      quantidade: q,
-      pessoas: p,
-      status: s,
-      origem: "webapp"
-    };
+    // Timeout pra nunca travar infinito
+    const timeoutMs = 12000;
+    const t = setTimeout(() => {
+      setBusy(false);
+      showResult(false, "Travou ao comunicar com o servidor. Provável: página não está rodando no Web App do Apps Script ou implantação desatualizada.");
+    }, timeoutMs);
 
-    // Chama o Apps Script no backend (sem CORS, sem fetch, sem URL)
-    google.script.run
-      .withSuccessHandler((resp) => {
-        loading.style.display = "none";
-        btnEnviar.disabled = false;
+    // Se não estiver dentro do Web App, isso dá o erro real (e você vê na tela)
+    try {
+      if (!window.google || !google.script || !google.script.run) {
+        clearTimeout(t);
+        setBusy(false);
+        showResult(false, "Erro: esta página não está rodando dentro do Web App do Apps Script (google.script.run indisponível). Abra pelo link /exec do Apps Script.");
+        return;
+      }
 
-        if (!resp || !resp.ok) {
-          const msg = resp?.error || "Falha ao registrar/enviar.";
-          showResult(false, msg);
+      const payload = { nome: n, quantidade: q, pessoas: p, status: s, origem: "webapp" };
 
-          // Loga detalhes de erro do WhatsApp no console (pra debugar rápido)
-          console.log("Detalhes WA:", resp?.wa || null);
-          return;
-        }
+      google.script.run
+        .withSuccessHandler((resp) => {
+          clearTimeout(t);
+          setBusy(false);
 
-        showResult(true, "Confirmação registrada e enviada ✅");
-        console.log("WA OK:", resp.wa);
+          if (!resp || !resp.ok) {
+            showResult(false, resp?.error || "Falha ao registrar/enviar.");
+            console.log("Detalhes WA:", resp?.wa || null);
+            return;
+          }
 
-        // Opcional: limpar campos após sucesso
-        // nome.value = "";
-        // quantidade.value = "";
-        // pessoas.value = "";
-        // status.value = "Confirmado";
-      })
-      .withFailureHandler((err) => {
-        loading.style.display = "none";
-        btnEnviar.disabled = false;
-        showResult(false, "Erro interno no servidor. Veja os logs do Apps Script.");
-        console.error(err);
-      })
-      .confirmarPresenca(payload);
+          showResult(true, "Confirmação registrada e enviada ✅");
+          console.log("WA OK:", resp.wa);
+        })
+        .withFailureHandler((err) => {
+          clearTimeout(t);
+          setBusy(false);
+          showResult(false, "Erro no Apps Script: " + (err?.message || String(err)));
+          console.error(err);
+        })
+        .confirmarPresenca(payload);
+
+    } catch (e) {
+      clearTimeout(t);
+      setBusy(false);
+      showResult(false, "Erro no navegador: " + (e?.message || String(e)));
+      console.error(e);
+    }
   });
 </script>
 
