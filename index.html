@@ -106,6 +106,7 @@
     inset: 0;
     background: rgba(255,255,255,0.96);
     z-index: 9999;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -212,9 +213,9 @@
 
 <script>
   // ====== CONFIG ======
-  const LEAF_IMG = "https://office-net-ofc.github.io/confirmacao-de_presenca/imagens/Moldes_De_Folhas_Para_Imprimir_-_Dicas_Pr%C3%A1ticas__ABB-removebg-preview.png".replace("_de_presenca","-de-presenca");
+  const LEAF_IMG = "https://office-net-ofc.github.io/confirmacao-de-presenca/imagens/Moldes_De_Folhas_Para_Imprimir_-_Dicas_Pr%C3%A1ticas__ABB-removebg-preview.png";
 
-  // ✅ Número DESTINO da organização (com +55)
+  // Número da organização (Brasil +55)
   const WHATSAPP_PHONE = "5598989117646";
 
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJiVAymgiZuoWMaq1-U8ZD1n6m7cdF841LP8aYmB0LysRNbZfmbOPvKlnNftgiG30hfQ/exec";
@@ -233,7 +234,7 @@
   const btnCopyWa = document.getElementById("btnCopyWa");
 
   // ====== FOLHAS CAINDO ======
-  function criarFolhas(qtd = 26) {
+  function criarFolhas(qtd = 28) {
     const wrap = document.getElementById("folhas");
     wrap.innerHTML = "";
 
@@ -245,16 +246,13 @@
       img.decoding = "async";
       img.loading = "lazy";
 
-      const size = 18 + Math.random() * 34; // 18..52px
+      const size = 18 + Math.random() * 34;
       img.style.width = size + "px";
 
-      const left = Math.random() * 100;
-      img.style.left = left + "%";
+      img.style.left = (Math.random() * 100) + "%";
+      img.style.setProperty("--x", (Math.random() * 140 - 70) + "px");
 
-      const drift = (Math.random() * 140 - 70).toFixed(0) + "px"; // -70..+70
-      img.style.setProperty("--x", drift);
-
-      const duration = 6 + Math.random() * 10; // 6..16s
+      const duration = 6 + Math.random() * 10;
       const delay = -(Math.random() * duration);
       img.style.animationDuration = duration + "s";
       img.style.animationDelay = delay + "s";
@@ -264,8 +262,8 @@
     }
   }
 
-  criarFolhas(28);
-  window.addEventListener("resize", () => criarFolhas(28));
+  criarFolhas();
+  window.addEventListener("resize", criarFolhas);
 
   // ====== WHATSAPP FALLBACK ======
   function mostrarFallback(mensagem, link) {
@@ -278,7 +276,7 @@
         await navigator.clipboard.writeText(mensagem);
         btnCopyWa.innerText = "Copiado ✅";
       } catch {
-        alert("Não foi possível copiar automaticamente. Selecione e copie manualmente.");
+        alert("Copie manualmente a mensagem.");
       }
     };
 
@@ -286,24 +284,17 @@
   }
 
   function abrirWhatsAppComFallback(mensagem) {
-    const text = encodeURIComponent(mensagem);
-    const waLink = `https://wa.me/${WHATSAPP_PHONE}?text=${text}`;
-
-    // abre WhatsApp
+    const waLink = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(mensagem)}`;
     window.location.href = waLink;
-
-    // fallback caso não abra
-    setTimeout(() => {
-      mostrarFallback(mensagem, waLink);
-    }, 1200);
+    setTimeout(() => mostrarFallback(mensagem, waLink), 1200);
   }
 
   // ====== ENVIO ======
   btnEnviar.addEventListener("click", async () => {
-    const n = (nome.value || "").trim();
-    const q = (quantidade.value || "").trim();
-    const p = (pessoas.value || "").trim();
-    const s = (status.value || "").trim();
+    const n = nome.value.trim();
+    const q = quantidade.value.trim();
+    const p = pessoas.value.trim();
+    const s = status.value.trim();
 
     if (!n || !q) {
       alert("Preencha nome e quantidade.");
@@ -322,24 +313,15 @@
 👨‍👩‍👧 Pessoas: ${p || "Não informado"}
 📌 Status: ${s || "Confirmado"}`;
 
-    // ✅ Tenta gravar no Google Sheets primeiro; independente do resultado, manda pro WhatsApp
     try {
       const formData = new FormData();
       formData.append("nome", n);
       formData.append("quantidade", q);
       formData.append("pessoas", p);
       formData.append("status", s);
-
-      const resp = await fetch(GOOGLE_SCRIPT_URL, { method: "POST", body: formData });
-
-      // se quiser garantir 100% que gravou antes de abrir o WhatsApp,
-      // mantenha este check (ele já está aqui):
-      if (!resp.ok) {
-        console.warn("Google Script respondeu com status:", resp.status);
-      }
-    } catch (err) {
-      console.warn("Falha ao enviar para Google Script:", err);
-      // não trava o fluxo
+      await fetch(GOOGLE_SCRIPT_URL, { method: "POST", body: formData });
+    } catch (e) {
+      console.warn("Falha ao registrar no Google Sheets", e);
     } finally {
       loading.style.display = "none";
       btnEnviar.disabled = false;
