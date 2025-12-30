@@ -38,6 +38,7 @@
     animation-name: cair;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,.12));
   }
 
   @keyframes cair{
@@ -99,14 +100,13 @@
   button:hover{ background-color: var(--verde2); }
   button:disabled{ opacity: .6; cursor: not-allowed; }
 
-  /* LOADING */
+  /* LOADING (corrigido: começa escondido e só aparece via JS) */
   #loading{
     display: none;
     position: fixed;
     inset: 0;
     background: rgba(255,255,255,0.96);
     z-index: 9999;
-    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -215,7 +215,7 @@
   // ====== CONFIG ======
   const LEAF_IMG = "https://office-net-ofc.github.io/confirmacao-de-presenca/imagens/Moldes_De_Folhas_Para_Imprimir_-_Dicas_Pr%C3%A1ticas__ABB-removebg-preview.png";
 
-  // Número da organização (Brasil +55)
+  // Número destino (Brasil +55) -> 98989117646
   const WHATSAPP_PHONE = "5598989117646";
 
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJiVAymgiZuoWMaq1-U8ZD1n6m7cdF841LP8aYmB0LysRNbZfmbOPvKlnNftgiG30hfQ/exec";
@@ -233,8 +233,20 @@
   const btnOpenWa = document.getElementById("btnOpenWa");
   const btnCopyWa = document.getElementById("btnCopyWa");
 
-  // ====== FOLHAS CAINDO ======
-  function criarFolhas(qtd = 28) {
+  // ====== FOLHAS CAINDO (em volta do formulário) ======
+  function gerarLeftEmVoltaDoCentro() {
+    // Evita cair no “miolo” do formulário (aprox 30%..70% da largura)
+    let left = Math.random() * 100;
+    if (left > 30 && left < 70) {
+      // joga pra borda esquerda ou direita
+      left = (Math.random() < 0.5)
+        ? (Math.random() * 22)            // 0..22
+        : (78 + Math.random() * 22);      // 78..100
+    }
+    return left;
+  }
+
+  function criarFolhas(qtd = 34) {
     const wrap = document.getElementById("folhas");
     wrap.innerHTML = "";
 
@@ -244,15 +256,17 @@
       img.className = "folha";
       img.alt = "";
       img.decoding = "async";
-      img.loading = "lazy";
+      img.loading = "eager"; // garante que apareça rápido
 
-      const size = 18 + Math.random() * 34;
+      const size = 18 + Math.random() * 34; // 18..52
       img.style.width = size + "px";
 
-      img.style.left = (Math.random() * 100) + "%";
-      img.style.setProperty("--x", (Math.random() * 140 - 70) + "px");
+      img.style.left = gerarLeftEmVoltaDoCentro() + "%";
 
-      const duration = 6 + Math.random() * 10;
+      const drift = (Math.random() * 140 - 70).toFixed(0) + "px";
+      img.style.setProperty("--x", drift);
+
+      const duration = 6 + Math.random() * 10; // 6..16
       const delay = -(Math.random() * duration);
       img.style.animationDuration = duration + "s";
       img.style.animationDelay = delay + "s";
@@ -262,8 +276,8 @@
     }
   }
 
-  criarFolhas();
-  window.addEventListener("resize", criarFolhas);
+  criarFolhas(34);
+  window.addEventListener("resize", () => criarFolhas(34));
 
   // ====== WHATSAPP FALLBACK ======
   function mostrarFallback(mensagem, link) {
@@ -276,7 +290,7 @@
         await navigator.clipboard.writeText(mensagem);
         btnCopyWa.innerText = "Copiado ✅";
       } catch {
-        alert("Copie manualmente a mensagem.");
+        alert("Não foi possível copiar automaticamente. Selecione e copie manualmente.");
       }
     };
 
@@ -284,17 +298,22 @@
   }
 
   function abrirWhatsAppComFallback(mensagem) {
-    const waLink = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(mensagem)}`;
+    const text = encodeURIComponent(mensagem);
+    const waLink = `https://wa.me/${WHATSAPP_PHONE}?text=${text}`;
+
     window.location.href = waLink;
-    setTimeout(() => mostrarFallback(mensagem, waLink), 1200);
+
+    setTimeout(() => {
+      mostrarFallback(mensagem, waLink);
+    }, 1200);
   }
 
   // ====== ENVIO ======
   btnEnviar.addEventListener("click", async () => {
-    const n = nome.value.trim();
-    const q = quantidade.value.trim();
-    const p = pessoas.value.trim();
-    const s = status.value.trim();
+    const n = (nome.value || "").trim();
+    const q = (quantidade.value || "").trim();
+    const p = (pessoas.value || "").trim();
+    const s = (status.value || "").trim();
 
     if (!n || !q) {
       alert("Preencha nome e quantidade.");
@@ -319,9 +338,18 @@
       formData.append("quantidade", q);
       formData.append("pessoas", p);
       formData.append("status", s);
-      await fetch(GOOGLE_SCRIPT_URL, { method: "POST", body: formData });
-    } catch (e) {
-      console.warn("Falha ao registrar no Google Sheets", e);
+
+      const resp = await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        body: formData
+      });
+
+      if (!resp.ok) {
+        console.warn("Google Script respondeu com status:", resp.status);
+      }
+    } catch (err) {
+      console.warn("Falha ao enviar para Google Script:", err);
+      // não trava: ainda vai pro WhatsApp
     } finally {
       loading.style.display = "none";
       btnEnviar.disabled = false;
