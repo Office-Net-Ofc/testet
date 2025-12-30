@@ -1,495 +1,358 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Confirmação de Presença - Pedro Dômini</title>
 
 <style>
-body {
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background: #f7f2e8;
-  min-height: 100vh;
-  margin: 0;
-  overflow-x: hidden;
-}
+  :root{
+    --verde:#2f7d32;
+    --verde2:#256428;
+    --bg:#f7f2e8;
+    --texto:#4e342e;
+  }
 
-.folhas {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-}
+  body{
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+  }
 
-.folha {
-  position: absolute;
-  width: 28px;
-  opacity: 0.6;
-  animation: cair linear infinite;
-}
+  /* Folhas caindo */
+  .folhas{
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
 
-@keyframes cair {
-  from { transform: translateY(-50px) rotate(0deg); }
-  to { transform: translateY(110vh) rotate(360deg); }
-}
+  .folha{
+    position: absolute;
+    top: -80px;
+    opacity: .75;
+    will-change: transform;
+    animation-name: cair;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
 
-.container {
-  position: relative;
-  z-index: 2;
-  background: #ffffff;
-  padding: 30px;
-  border-radius: 18px;
-  max-width: 440px;
-  margin: 40px auto;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-  border: 4px solid #2f7d32;
-}
+  @keyframes cair{
+    0%   { transform: translate3d(var(--x,0), -80px, 0) rotate(0deg); }
+    100% { transform: translate3d(var(--x,0), 110vh, 0) rotate(360deg); }
+  }
 
-.header-img {
-  width: 100%;
-  max-width: 340px;
-  display: block;
-  margin: 0 auto 20px;
-}
+  .container{
+    position: relative;
+    z-index: 2;
+    background: #fff;
+    padding: 30px;
+    border-radius: 18px;
+    max-width: 440px;
+    margin: 40px auto;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    border: 4px solid var(--verde);
+  }
 
-h2 { text-align: center; color: #2f7d32; }
+  .header-img{
+    width: 100%;
+    max-width: 340px;
+    display: block;
+    margin: 0 auto 20px;
+  }
 
-label {
-  font-weight: 600;
-  margin-top: 18px;
-  display: block;
-  color: #4e342e;
-}
+  h2{ text-align:center; color: var(--verde); margin: 0 0 10px; }
 
-input, textarea, select {
-  width: 100%;
-  padding: 12px;
-  margin-top: 6px;
-  border-radius: 8px;
-  border: 1px solid #cfcfcf;
-  font-size: 15px;
-}
+  label{
+    font-weight: 600;
+    margin-top: 18px;
+    display: block;
+    color: var(--texto);
+  }
 
-textarea { resize: vertical; }
+  input, textarea, select{
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: 1px solid #cfcfcf;
+    font-size: 15px;
+    box-sizing: border-box;
+  }
 
-button {
-  margin-top: 25px;
-  width: 100%;
-  padding: 15px;
-  background-color: #2f7d32;
-  color: white;
-  font-size: 17px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
+  textarea{ resize: vertical; min-height: 88px; }
 
-button:hover { background-color: #256428; }
-button:disabled { opacity: .6; cursor: not-allowed; }
+  button{
+    margin-top: 25px;
+    width: 100%;
+    padding: 15px;
+    background-color: var(--verde);
+    color: #fff;
+    font-size: 17px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  button:hover{ background-color: var(--verde2); }
+  button:disabled{ opacity: .6; cursor: not-allowed; }
 
-/* LOADING */
-#loading {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(255,255,255,0.96);
-  z-index: 9999;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 20px;
-}
+  /* LOADING */
+  #loading{
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.96);
+    z-index: 9999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+  }
 
-.notice {
-  margin-top: 14px;
-  background: #fff8e1;
-  border: 1px solid #ffe0a3;
-  color: #5d4037;
-  padding: 12px;
-  border-radius: 12px;
-  font-size: 14px;
-  line-height: 1.35;
-  display: none;
-}
-.notice b { color: #3e2723; }
-
-/* FALLBACK WHATSAPP */
-#waFallback {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(255,255,255,0.98);
-  z-index: 99999;
-  padding: 20px;
-}
-#waFallback .card {
-  max-width: 520px;
-  margin: 40px auto;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 16px;
-  padding: 18px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.12);
-}
-#waFallback h3 {
-  margin: 0 0 10px;
-  color: #2f7d32;
-}
-#waFallback p {
-  margin: 0 0 12px;
-  color: #4e342e;
-  line-height: 1.35;
-}
-#waFallback textarea {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #cfcfcf;
-  font-size: 14px;
-}
-#waFallback .row {
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
-  flex-wrap: wrap;
-}
-#waFallback .btn {
-  flex: 1;
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  font-size: 15px;
-}
-#waFallback .btn-primary { background: #2f7d32; color: #fff; }
-#waFallback .btn-dark { background: #256428; color: #fff; text-decoration: none; display: inline-block; text-align: center; }
-#waFallback .btn-outline { margin-top: 10px; width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd; background: #fff; cursor: pointer; }
+  /* FALLBACK */
+  #waFallback{
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.98);
+    z-index: 99999;
+    padding: 20px;
+  }
+  #waFallback .card{
+    max-width: 520px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.12);
+  }
+  #waFallback textarea{
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #cfcfcf;
+    box-sizing: border-box;
+  }
+  #waFallback .row{
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  #waFallback .btn{
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+  }
+  #waFallback .btn-primary{ background: var(--verde); color: #fff; }
+  #waFallback .btn-outline{ background: #fff; border: 1px solid #ccc; color: #222; }
 </style>
 </head>
 
 <body>
 
-<!-- LOADING -->
 <div id="loading">
-  <h2 id="loadingTitle">⏳ Aguarde um momento</h2>
-  <p id="loadingText">Estamos registrando seus dados 💚</p>
+  <h2>⏳ Aguarde</h2>
+  <p>Registrando sua confirmação 💚</p>
 </div>
 
-<!-- FALLBACK WHATSAPP (quando o sistema não abre o app) -->
 <div id="waFallback">
   <div class="card">
     <h3>Quase lá ✅</h3>
-    <p>
-      Se o WhatsApp não abriu automaticamente, use uma das opções abaixo.
-      (Isso acontece em alguns celulares dentro do Instagram/Facebook.)
-    </p>
-
-    <textarea id="waMsg" rows="7"></textarea>
-
+    <p>Se o WhatsApp não abriu automaticamente, use uma das opções abaixo:</p>
+    <textarea id="waMsg" rows="7" readonly></textarea>
     <div class="row">
-      <button id="btnShareWa" type="button" class="btn btn-primary">Compartilhar</button>
-      <button id="btnCopyWa" type="button" class="btn btn-primary">Copiar mensagem</button>
-      <a id="btnOpenWa" class="btn btn-dark" href="#" target="_blank" rel="noopener">Abrir WhatsApp</a>
+      <a id="btnOpenWa" class="btn btn-primary" href="#" target="_blank" rel="noopener">Abrir WhatsApp</a>
+      <button id="btnCopyWa" class="btn btn-outline" type="button">Copiar mensagem</button>
     </div>
-
-    <button id="btnCloseWa" type="button" class="btn-outline">Fechar</button>
   </div>
 </div>
 
-<div class="folhas" id="folhas"></div>
+<div class="folhas" id="folhas" aria-hidden="true"></div>
 
 <div class="container">
-
   <img
     src="https://office-net-ofc.github.io/confirmacao-de-presenca/imagens/aergergerg.PNG"
     class="header-img"
-    alt="Convite Pedro Dômini"
+    alt="Convite"
   />
 
   <h2>🌿 Confirmação de Presença</h2>
 
-  <div id="internalBrowserNotice" class="notice">
-    ⚠️ Você parece estar abrindo pelo <b>navegador do Instagram/Facebook</b>.
-    Se o WhatsApp não abrir, toque nos <b>3 pontinhos (⋮)</b> e escolha <b>“Abrir no navegador”</b> (Chrome/Safari).
-  </div>
+  <label for="nome">Qual é o seu nome?</label>
+  <input type="text" id="nome" placeholder="Digite seu nome completo" autocomplete="name" />
 
-  <label>Qual é o seu nome?</label>
-  <input type="text" id="nome" placeholder="Digite seu nome completo" autocomplete="name">
-
-  <label>Quantas pessoas contando com você irão?</label>
+  <label for="quantidade">Quantas pessoas contando com você irão?</label>
   <select id="quantidade">
     <option value="">Qtd</option>
-    <option>1</option><option>2</option><option>3</option>
-    <option>4</option><option>5</option><option>6</option>
-    <option>7</option><option>8</option><option>9</option>
-    <option>10</option>
+    <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+    <option value="4">4</option><option value="5">5</option><option value="6">6</option>
   </select>
 
-  <label>Digite o nome das pessoas que irão com você:</label>
-  <textarea id="pessoas" rows="4" placeholder="Ex: Maria Silva, João Silva (5 anos)"></textarea>
+  <label for="pessoas">Quem irá com você?</label>
+  <textarea id="pessoas" placeholder="Ex: Maria Silva, João Silva (5 anos)"></textarea>
 
-  <label>Confirma presença?</label>
+  <label for="status">Confirma presença?</label>
   <select id="status">
-    <option value="Confirmado">✅ Sim, estaremos presentes</option>
-    <option value="Não poderá comparecer">❌ Não poderemos comparecer</option>
+    <option value="Confirmado">✅ Sim</option>
+    <option value="Não poderá comparecer">❌ Não</option>
   </select>
 
   <button id="btnEnviar" type="button">Enviar confirmação 💚</button>
-
 </div>
 
 <script>
-/** =========================
- * CONFIG (JÁ AJUSTADO)
- * ========================= */
-const WHATSAPP_PHONE = "559885699508";
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJiVAymgiZuoWMaq1-U8ZD1n6m7cdF841LP8aYmB0LysRNbZfmbOPvKlnNftgiG30hfQ/exec";
+  // ====== CONFIG ======
+  const LEAF_IMG = "https://office-net-ofc.github.io/confirmacao-de-presenca/imagens/Moldes_De_Folhas_Para_Imprimir_-_Dicas_Pr%C3%A1ticas__ABB-removebg-preview.png";
 
-/** =========================
- * ELEMENTOS
- * ========================= */
-const nomeEl = document.getElementById("nome");
-const quantidadeEl = document.getElementById("quantidade");
-const pessoasEl = document.getElementById("pessoas");
-const statusEl = document.getElementById("status");
+  // Esse número é o DESTINO do WhatsApp (organização)
+  const WHATSAPP_PHONE = "559885699508";
 
-const loading = document.getElementById("loading");
-const loadingTitle = document.getElementById("loadingTitle");
-const loadingText = document.getElementById("loadingText");
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJiVAymgiZuoWMaq1-U8ZD1n6m7cdF841LP8aYmB0LysRNbZfmbOPvKlnNftgiG30hfQ/exec";
 
-const btnEnviar = document.getElementById("btnEnviar");
-const noticeEl = document.getElementById("internalBrowserNotice");
+  // ====== ELEMENTOS ======
+  const nome = document.getElementById("nome");
+  const quantidade = document.getElementById("quantidade");
+  const pessoas = document.getElementById("pessoas");
+  const status = document.getElementById("status");
+  const btnEnviar = document.getElementById("btnEnviar");
 
-// fallback
-const waFallback = document.getElementById("waFallback");
-const waMsg = document.getElementById("waMsg");
-const btnShareWa = document.getElementById("btnShareWa");
-const btnCopyWa = document.getElementById("btnCopyWa");
-const btnOpenWa = document.getElementById("btnOpenWa");
-const btnCloseWa = document.getElementById("btnCloseWa");
+  const loading = document.getElementById("loading");
+  const waFallback = document.getElementById("waFallback");
+  const waMsg = document.getElementById("waMsg");
+  const btnOpenWa = document.getElementById("btnOpenWa");
+  const btnCopyWa = document.getElementById("btnCopyWa");
 
-/** =========================
- * FOLHAS (efeito visual)
- * ========================= */
-const folhasContainer = document.getElementById("folhas");
-const folhaImg = "https://office-net-ofc.github.io/confirmacao-de-presenca/imagens/Moldes_De_Folhas_Para_Imprimir_-_Dicas_Pr%C3%A1ticas__ABB-removebg-preview.png";
+  // ====== FOLHAS CAINDO ======
+  function criarFolhas(qtd = 26) {
+    const wrap = document.getElementById("folhas");
+    wrap.innerHTML = "";
 
-for (let i = 0; i < 20; i++) {
-  const folha = document.createElement("img");
-  folha.src = folhaImg;
-  folha.className = "folha";
-  folha.style.left = Math.random() * 100 + "vw";
-  folha.style.animationDuration = (8 + Math.random() * 6) + "s";
-  folha.style.animationDelay = Math.random() * 5 + "s";
-  folhasContainer.appendChild(folha);
-}
+    for (let i = 0; i < qtd; i++) {
+      const img = document.createElement("img");
+      img.src = LEAF_IMG;
+      img.className = "folha";
+      img.alt = "";
+      img.decoding = "async";
+      img.loading = "lazy";
 
-/** =========================
- * UTIL
- * ========================= */
-function setLoading(isLoading, title, text) {
-  if (title) loadingTitle.innerText = title;
-  if (text) loadingText.innerText = text;
-  loading.style.display = isLoading ? "flex" : "none";
-  btnEnviar.disabled = isLoading;
-}
+      // tamanho aleatório
+      const size = 18 + Math.random() * 34; // 18..52px
+      img.style.width = size + "px";
 
-function isInternalBrowser() {
-  const ua = navigator.userAgent || "";
-  return /Instagram|FBAN|FBAV|FB_IAB|FB4A|FBIOS|Line|Twitter|TikTok|Pinterest|Snapchat/i.test(ua);
-}
+      // posição inicial aleatória (em %)
+      const left = Math.random() * 100;
+      img.style.left = left + "%";
 
-function isAndroid() {
-  return /Android/i.test(navigator.userAgent || "");
-}
+      // deslocamento lateral durante a queda
+      const drift = (Math.random() * 140 - 70).toFixed(0) + "px"; // -70..+70
+      img.style.setProperty("--x", drift);
 
-function limparTexto(s) {
-  return (s || "").toString().replace(/\s+/g, " ").trim();
-}
+      // tempo e atraso
+      const duration = 6 + Math.random() * 10; // 6..16s
+      const delay = -(Math.random() * duration); // negativo pra já começar "no meio"
+      img.style.animationDuration = duration + "s";
+      img.style.animationDelay = delay + "s";
 
-function montarMensagemWhatsApp({ nome, quantidade, pessoas, status }) {
-  const pessoasTxt = pessoas ? pessoas : "Não informado";
-  return `🌿 *CONFIRMAÇÃO DE PRESENÇA* 🌿
+      // rotação inicial variada
+      img.style.transform = `translateY(-80px) rotate(${Math.random() * 360}deg)`;
+
+      wrap.appendChild(img);
+    }
+  }
+
+  criarFolhas(28);
+  window.addEventListener("resize", () => criarFolhas(28));
+
+  // ====== WHATSAPP FALLBACK ======
+  function mostrarFallback(mensagem, link) {
+    waMsg.value = mensagem;
+    btnOpenWa.href = link;
+
+    btnCopyWa.innerText = "Copiar mensagem";
+    btnCopyWa.onclick = async () => {
+      try {
+        await navigator.clipboard.writeText(mensagem);
+        btnCopyWa.innerText = "Copiado ✅";
+      } catch {
+        alert("Não foi possível copiar automaticamente. Selecione e copie manualmente.");
+      }
+    };
+
+    waFallback.style.display = "block";
+  }
+
+  function abrirWhatsAppComFallback(mensagem) {
+    const text = encodeURIComponent(mensagem);
+    const waLink = `https://wa.me/${WHATSAPP_PHONE}?text=${text}`;
+
+    // Tentativa padrão (web) + fallback
+    window.location.href = waLink;
+
+    setTimeout(() => {
+      mostrarFallback(mensagem, waLink);
+    }, 1200);
+  }
+
+  // ====== ENVIO ======
+  btnEnviar.addEventListener("click", async () => {
+    const n = (nome.value || "").trim();
+    const q = (quantidade.value || "").trim();
+    const p = (pessoas.value || "").trim();
+    const s = (status.value || "").trim();
+
+    if (!n || !q) {
+      alert("Preencha nome e quantidade.");
+      return;
+    }
+
+    btnEnviar.disabled = true;
+    loading.style.display = "flex";
+
+    const mensagem =
+`🌿 *CONFIRMAÇÃO DE PRESENÇA* 🌿
 🎉 Aniversário de 1 ano do Pedro Dômini
 
-👤 *Nome:* ${nome}
-👥 *Quantidade:* ${quantidade}
-👨‍👩‍👧 *Pessoas:* ${pessoasTxt}
-📌 *Status:* ${status}`;
-}
+👤 Nome: ${n}
+👥 Quantidade: ${q}
+👨‍👩‍👧 Pessoas: ${p || "Não informado"}
+📌 Status: ${s || "Confirmado"}`;
 
-function mostrarFallbackWhatsApp(mensagem, link) {
-  waMsg.value = mensagem;
-  btnOpenWa.href = link;
-
-  btnCopyWa.onclick = async () => {
     try {
-      await navigator.clipboard.writeText(mensagem);
-      btnCopyWa.innerText = "Copiado ✅";
-      setTimeout(() => btnCopyWa.innerText = "Copiar mensagem", 1500);
-    } catch {
-      // fallback antigo
-      waMsg.focus();
-      waMsg.select();
-      document.execCommand("copy");
-      btnCopyWa.innerText = "Copiado ✅";
-      setTimeout(() => btnCopyWa.innerText = "Copiar mensagem", 1500);
-    }
-  };
+      const formData = new FormData();
+      formData.append("nome", n);
+      formData.append("quantidade", q);
+      formData.append("pessoas", p);
+      formData.append("status", s);
 
-  btnShareWa.onclick = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({ text: mensagem });
-        return;
-      } catch (e) {
-        // cancelou ou falhou => fica no modal
+      const resp = await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        body: formData
+      });
+
+      // se o Apps Script der erro/recusar, a gente avisa mas não te trava
+      if (!resp.ok) {
+        console.warn("Google Script respondeu com status:", resp.status);
       }
+    } catch (err) {
+      console.warn("Falha ao enviar para Google Script:", err);
+      alert("A confirmação foi montada, mas houve falha ao registrar no sistema. Você ainda pode enviar no WhatsApp.");
+    } finally {
+      loading.style.display = "none";
+      btnEnviar.disabled = false;
     }
-    // se não tem share, só mantém modal e sugere copiar
-    btnShareWa.innerText = "Não disponível";
-    setTimeout(() => btnShareWa.innerText = "Compartilhar", 1500);
-  };
 
-  btnCloseWa.onclick = () => { waFallback.style.display = "none"; };
-
-  waFallback.style.display = "block";
-}
-
-/**
- * ABERTURA BLINDADA:
- * 1) Tenta Web Share (Android) — evita Play Store e abre seletor de apps
- * 2) Tenta intent WhatsApp normal + Business
- * 3) Tenta deep link whatsapp://
- * 4) Mostra fallback (copiar/abrir) em vez de jogar usuário pra Play Store
- */
-async function abrirWhatsAppComFallback(mensagem) {
-  const text = encodeURIComponent(mensagem);
-  const android = isAndroid();
-
-  const universalLink = `https://wa.me/${WHATSAPP_PHONE}?text=${text}`;
-
-  // 1) Share sheet (muito forte no Android; não cai em Play Store)
-  if (android && navigator.share) {
-    try {
-      await navigator.share({ text: mensagem });
-      return;
-    } catch (e) {
-      // usuário pode cancelar; seguimos
-    }
-  }
-
-  // 2) Android intents (tentamos WhatsApp normal e Business)
-  const intentWhatsApp =
-    `intent://send?phone=${WHATSAPP_PHONE}&text=${text}` +
-    `#Intent;scheme=whatsapp;package=com.whatsapp;end`;
-
-  const intentBusiness =
-    `intent://send?phone=${WHATSAPP_PHONE}&text=${text}` +
-    `#Intent;scheme=whatsapp;package=com.whatsapp.w4b;end`;
-
-  const deepLink = `whatsapp://send?phone=${WHATSAPP_PHONE}&text=${text}`;
-
-  if (android) {
-    window.location.href = intentWhatsApp;
-
-    setTimeout(() => {
-      window.location.href = intentBusiness;
-    }, 500);
-
-    setTimeout(() => {
-      window.location.href = deepLink;
-    }, 1000);
-
-    // Em vez de redirecionar automaticamente pro wa.me (que em alguns casos vira Play Store),
-    // mostramos um fallback garantido.
-    setTimeout(() => {
-      mostrarFallbackWhatsApp(mensagem, universalLink);
-    }, 1700);
-  } else {
-    // iOS: wa.me costuma ser ok, mas mantemos fallback
-    window.location.href = universalLink;
-
-    setTimeout(() => {
-      mostrarFallbackWhatsApp(mensagem, universalLink);
-    }, 1200);
-  }
-}
-
-async function salvarNoSheets({ nome, quantidade, pessoas, status }) {
-  const formData = new FormData();
-  formData.append("nome", nome);
-  formData.append("quantidade", quantidade);
-  formData.append("pessoas", pessoas);
-  formData.append("status", status);
-  formData.append("origem", "github-pages");
-
-  const resp = await fetch(GOOGLE_SCRIPT_URL, {
-    method: "POST",
-    body: formData
+    abrirWhatsAppComFallback(mensagem);
   });
-
-  const data = await resp.json().catch(() => null);
-
-  if (!data || !data.ok) {
-    const msg = (data && data.error) ? data.error : "Falha ao salvar na planilha.";
-    throw new Error(msg);
-  }
-  return true;
-}
-
-/** =========================
- * AÇÃO PRINCIPAL
- * ========================= */
-async function enviar() {
-  const nome = limparTexto(nomeEl.value);
-  const quantidade = limparTexto(quantidadeEl.value);
-  const pessoas = limparTexto(pessoasEl.value);
-  const status = limparTexto(statusEl.value);
-
-  if (!nome || nome.length < 3) {
-    alert("Digite seu nome completo 😊");
-    nomeEl.focus();
-    return;
-  }
-  if (!quantidade) {
-    alert("Selecione a quantidade de pessoas 😊");
-    quantidadeEl.focus();
-    return;
-  }
-
-  setLoading(true, "⏳ Aguarde um momento", "Estamos registrando seus dados 💚");
-
-  try {
-    // 1) salva primeiro (garante registro)
-    await salvarNoSheets({ nome, quantidade, pessoas, status });
-
-    // 2) abre WhatsApp
-    setLoading(true, "✅ Tudo certo!", "Abrindo o WhatsApp com a mensagem pronta 💚");
-    const mensagem = montarMensagemWhatsApp({ nome, quantidade, pessoas, status });
-    await abrirWhatsAppComFallback(mensagem);
-
-    // some com overlay (se share foi usado, pode não voltar; tudo bem)
-    setTimeout(() => setLoading(false), 2500);
-  } catch (err) {
-    console.error(err);
-    setLoading(true, "❌ Erro", "Não conseguimos salvar seus dados. Tente novamente.");
-    setTimeout(() => {
-      setLoading(false);
-      alert("Erro ao salvar na planilha: " + (err.message || "tente novamente."));
-    }, 1200);
-  }
-}
-
-/** =========================
- * INIT
- * ========================= */
-btnEnviar.addEventListener("click", enviar);
-
-if (isInternalBrowser()) {
-  noticeEl.style.display = "block";
-}
 </script>
 
 </body>
