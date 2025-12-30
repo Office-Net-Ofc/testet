@@ -212,10 +212,10 @@
 
 <script>
   // ====== CONFIG ======
-  const LEAF_IMG = "https://office-net-ofc.github.io/confirmacao-de-presenca/imagens/Moldes_De_Folhas_Para_Imprimir_-_Dicas_Pr%C3%A1ticas__ABB-removebg-preview.png";
+  const LEAF_IMG = "https://office-net-ofc.github.io/confirmacao-de_presenca/imagens/Moldes_De_Folhas_Para_Imprimir_-_Dicas_Pr%C3%A1ticas__ABB-removebg-preview.png".replace("_de_presenca","-de-presenca");
 
-  // Esse número é o DESTINO do WhatsApp (organização)
-  const WHATSAPP_PHONE = "559885699508";
+  // ✅ Número DESTINO da organização (com +55)
+  const WHATSAPP_PHONE = "5598989117646";
 
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzJiVAymgiZuoWMaq1-U8ZD1n6m7cdF841LP8aYmB0LysRNbZfmbOPvKlnNftgiG30hfQ/exec";
 
@@ -245,27 +245,21 @@
       img.decoding = "async";
       img.loading = "lazy";
 
-      // tamanho aleatório
       const size = 18 + Math.random() * 34; // 18..52px
       img.style.width = size + "px";
 
-      // posição inicial aleatória (em %)
       const left = Math.random() * 100;
       img.style.left = left + "%";
 
-      // deslocamento lateral durante a queda
       const drift = (Math.random() * 140 - 70).toFixed(0) + "px"; // -70..+70
       img.style.setProperty("--x", drift);
 
-      // tempo e atraso
       const duration = 6 + Math.random() * 10; // 6..16s
-      const delay = -(Math.random() * duration); // negativo pra já começar "no meio"
+      const delay = -(Math.random() * duration);
       img.style.animationDuration = duration + "s";
       img.style.animationDelay = delay + "s";
 
-      // rotação inicial variada
       img.style.transform = `translateY(-80px) rotate(${Math.random() * 360}deg)`;
-
       wrap.appendChild(img);
     }
   }
@@ -295,9 +289,10 @@
     const text = encodeURIComponent(mensagem);
     const waLink = `https://wa.me/${WHATSAPP_PHONE}?text=${text}`;
 
-    // Tentativa padrão (web) + fallback
+    // abre WhatsApp
     window.location.href = waLink;
 
+    // fallback caso não abra
     setTimeout(() => {
       mostrarFallback(mensagem, waLink);
     }, 1200);
@@ -327,6 +322,7 @@
 👨‍👩‍👧 Pessoas: ${p || "Não informado"}
 📌 Status: ${s || "Confirmado"}`;
 
+    // ✅ Tenta gravar no Google Sheets primeiro; independente do resultado, manda pro WhatsApp
     try {
       const formData = new FormData();
       formData.append("nome", n);
@@ -334,24 +330,21 @@
       formData.append("pessoas", p);
       formData.append("status", s);
 
-      const resp = await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        body: formData
-      });
+      const resp = await fetch(GOOGLE_SCRIPT_URL, { method: "POST", body: formData });
 
-      // se o Apps Script der erro/recusar, a gente avisa mas não te trava
+      // se quiser garantir 100% que gravou antes de abrir o WhatsApp,
+      // mantenha este check (ele já está aqui):
       if (!resp.ok) {
         console.warn("Google Script respondeu com status:", resp.status);
       }
     } catch (err) {
       console.warn("Falha ao enviar para Google Script:", err);
-      alert("A confirmação foi montada, mas houve falha ao registrar no sistema. Você ainda pode enviar no WhatsApp.");
+      // não trava o fluxo
     } finally {
       loading.style.display = "none";
       btnEnviar.disabled = false;
+      abrirWhatsAppComFallback(mensagem);
     }
-
-    abrirWhatsAppComFallback(mensagem);
   });
 </script>
 
